@@ -1,0 +1,12 @@
+:root {
+    --button-background: rgba(255, 255, 255, .05);
+
+	.base-button {
+		&.primary {
+			--button-icon-color: var(--primary);
+		}
+		&.secondary {
+			--button-icon-color: var(--secondary);
+		}
+	}
+}
