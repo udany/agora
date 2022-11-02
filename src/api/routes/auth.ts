@@ -8,12 +8,35 @@ let router = express.Router({});
 auth.generateRoutes(router);
 
 router.post('/register', async (req, res, next) => {
-	let { user: userData } = req.body;
+	let { user: userData }: { user: User } = req.body;
 
 	console.log(userData);
 
 	if (!userData.name || !userData.email || !userData.password) {
-		throw 'Invalid payload';
+		res.status(400);
+		res.send('Invalid payload');
+		return;
+	}
+
+	if (!PasswordService.validate(userData.password)) {
+		res.status(400);
+		res.send('Insecure password');
+		return;
+	}
+
+	let oldUser = await UserModel.selectFirst({
+		filters: [
+			{
+				column: 'email',
+				values: [userData.email]
+			}
+		]
+	});
+
+	if (oldUser && oldUser.id) {
+		res.status(409);
+		res.send('User already registered');
+		return;
 	}
 
 	const user = new User();
