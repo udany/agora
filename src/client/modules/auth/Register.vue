@@ -57,7 +57,7 @@
 			const router = useRouter();
 			let user = reactive(new User());
 
-			function register() {
+			async function register() {
 				if (!user.name) {
 					modalService.alert({ message: 'Name is a required field' })
 					return;
@@ -67,11 +67,37 @@
 					modalService.alert({ message: 'Email is a required field' })
 					return;
 				}
+
 				if (!emailRegex.exec(user.email)) {
 					modalService.alert({ message: 'Email is invalid' })
 					return;
 				}
-				apiService.auth.register(user);
+
+				if (!user.password) {
+					modalService.alert({ message: 'Password is a required field' })
+					return;
+				}
+				if (user.password.length <= 12) {
+					modalService.alert({
+						icon: 'key',
+						title: 'Password too short',
+						message: `Password is to be at least 12 characters, if that's too much, try a pass phrase instead of a pass word :D`
+					})
+					return;
+				}
+
+				try {
+					let {data} = await apiService.auth.register(user);
+				} catch ({ response }) {
+					switch (response.status) {
+						case 409:
+							modalService.alert({ icon: 'times', title: 'Error', message: 'Email is already registered' });
+							break;
+						default:
+							modalService.alert({ message: 'Invalid data' });
+							break;
+					}
+				}
 			}
 
 			function login() {
