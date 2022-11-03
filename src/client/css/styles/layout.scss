@@ -1,6 +1,6 @@
 body {
-	background: $neutral-darkest;
-	color: $neutral-lightest;
+	background: var(--neutral-darkest);
+	color: var(--neutral-lightest);
 
 	&:before, &:after{
 		content: ' ';

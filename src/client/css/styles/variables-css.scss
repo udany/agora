@@ -73,3 +73,31 @@
 	--scroll-bar-color: var(--secondary-hsl);
 	--scroll-bar-opacity: .7;
 }
+
+:root.light-mode {
+	// Colors
+	--neutral-darkest: #{$neutral-lightest};
+	--neutral-darkest-h: #{hue($neutral-lightest)};
+	--neutral-darkest-hs: #{hs-values($neutral-lightest)};
+	--neutral-darkest-hsl: #{hsl-values($neutral-lightest)};
+
+	--neutral-dark: #{$neutral-light};
+	--neutral-dark-h: #{hue($neutral-light)};
+	--neutral-dark-hs: #{hs-values($neutral-light)};
+	--neutral-dark-hsl: #{hsl-values($neutral-light)};
+
+	--neutral-md: #{$neutral-md};
+	--neutral-md-h: #{hue($neutral-md)};
+	--neutral-md-hs: #{hs-values($neutral-md)};
+	--neutral-md-hsl: #{hsl-values($neutral-md)};
+
+	--neutral-light: #{$neutral-dark};
+	--neutral-light-h: #{hue($neutral-dark)};
+	--neutral-light-hs: #{hs-values($neutral-dark)};
+	--neutral-light-hsl: #{hsl-values($neutral-dark)};
+
+	--neutral-lightest: #{$neutral-darkest};
+	--neutral-lightest-h: #{hue($neutral-darkest)};
+	--neutral-lightest-hs: #{hs-values($neutral-darkest)};
+	--neutral-lightest-hsl: #{hsl-values($neutral-darkest)};
+}

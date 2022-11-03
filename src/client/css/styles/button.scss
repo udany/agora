@@ -1,5 +1,7 @@
 :root {
-    --button-background: rgba(255, 255, 255, .05);
+	--button-background: hsla(var(--neutral-lightest-hsl), .05);
+	--button-background-hover: hsla(var(--neutral-lightest-hsl), .08);
+	--button-background-focus: hsla(var(--neutral-lightest-hsl), .12);
 
 	.base-button {
 		&.primary {
