@@ -11,6 +11,10 @@ body {
 	font-size: $font-size-sm;
 }
 
+p {
+	line-height: 1.5em;
+}
+
 // Headers
 h1, h2, h3, h4, h5, h6 {
 	color: var(--neutral-lightest);

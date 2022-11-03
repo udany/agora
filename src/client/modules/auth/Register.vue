@@ -16,19 +16,21 @@
 					<FormInput id="password" type="password" v-model="user.password" />
 				</FormField>
 
-				<div style="display: flex; justify-content: space-between">
-					<BaseButton
-						type="submit" icon="key" class="secondary me-2"
-						@click.prevent="login"
-					>
-						Login
-					</BaseButton>
-
+				<div style="display: flex; justify-content: space-between; align-items: center;">
 					<BaseButton
 						type="submit" icon="angle-right" class="primary"
 						@click.prevent="register"
 					>
 						Register!
+					</BaseButton>
+
+					<div class="text-xs">or</div>
+
+					<BaseButton
+						type="submit" icon="key" class="secondary"
+						@click.prevent="login"
+					>
+						Login
 					</BaseButton>
 				</div>
 			</div>
