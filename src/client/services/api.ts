@@ -11,14 +11,26 @@ export const apiService = {
 			let { data } = await api.post('/auth/register', {
 				user: user
 			})
-		}
-	},
-	session: {
-		async getUser() {
-			let { data } = await api.get('/session/user');
+		},
+		async login(user: User): Promise<boolean> {
+			try {
+				let { data } = await api.post('/auth/local', {
+					username: user.email,
+					password: user.password
+				});
+
+				return true;
+			} catch (e) {
+				console.log(e);
+				return false;
+			}
+		},
+
+		async session(): Promise<User> {
+			let { data } = await api.get('/auth/session');
 
 			return data ? new User().$fill(data) : null;
-		}
+		},
 	},
 	test: {
 		async test():Promise<User[]> {

@@ -3,7 +3,7 @@ import { createRouter as createVueRouter, createWebHistory, createMemoryHistory 
 const routes = [];
 
 // This imports all routes
-const contexts = import.meta.globEager('./modules/*/*routes.js')
+const contexts = import.meta.globEager('./modules/*/*routes.(js|ts)')
 
 for (let path of Object.keys(contexts)) {
 	let partial = contexts[path];

@@ -16,6 +16,7 @@
 					<BaseButton
 						type="submit" icon="angle-right" class="primary"
 						@click.prevent="login"
+						:disabled="loading"
 					>
 						Login
 					</BaseButton>
@@ -25,6 +26,7 @@
 					<BaseButton
 						type="submit" icon="pencil-alt" class="secondary"
 						@click.prevent="register"
+						:disabled="loading"
 					>
 						Register
 					</BaseButton>
@@ -35,7 +37,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, onMounted } from 'vue';
+	import { defineComponent, reactive, ref } from 'vue';
 	import { useRouter } from 'vue-router'
 
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
@@ -52,20 +54,26 @@
 		Name: 'Home',
 		setup() {
 			const router = useRouter();
-
 			let user = reactive(new User());
+			let loading = ref(false);
 
 			function register() {
 				router.push('register');
 			}
 
-			function login() {
-
+			async function login() {
+				if (await apiService.auth.login(user)) {
+					router.push('home');
+				} else {
+					modalService.alert({ icon: 'times', title: 'Error', message: 'Invalid credentials' });
+				}
 			}
 
 			return {
 				user,
-				register
+				loading,
+				register,
+				login
 			}
 		}
 	})

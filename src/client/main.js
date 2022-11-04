@@ -4,8 +4,11 @@ import { createSSRApp } from 'vue'
 import App from './App.vue'
 import createRouter from './router';
 import plugins from './plugins';
+import { sessionService } from './services/session';
 
 function createApp() {
+	sessionService.load();
+
 	const app = createSSRApp(App);
 	app.use(plugins);
 

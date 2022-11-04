@@ -96,7 +96,7 @@
 							modalService.alert({ icon: 'times', title: 'Error', message: 'Email is already registered' });
 							break;
 						default:
-							modalService.alert({ message: 'Invalid data' });
+							modalService.alert({ icon: 'times', title: 'Error', message: 'Invalid data' });
 							break;
 					}
 				}
