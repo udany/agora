@@ -27,9 +27,13 @@ export const apiService = {
 		},
 
 		async session(): Promise<User> {
-			let { data } = await api.get('/auth/session');
+			try {
+				let { data } = await api.get('/auth/session');
 
-			return data ? new User().$fill(data) : null;
+				return data ? new User().$fill(data) : null;
+			} catch (e) {
+				return null;
+			}
 		},
 	},
 	test: {
