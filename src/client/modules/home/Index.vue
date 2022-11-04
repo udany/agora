@@ -5,7 +5,7 @@
 				<MainLogo style="width: 30%" />
 			</div>
 
-			<h1 class="text-center mb-4">Welcome to Agora!</h1>
+			<h1 class="text-center mb-4">Home!</h1>
 
 			<p>
 				Agora is a simple discussion forum with medium-esque composing features.
