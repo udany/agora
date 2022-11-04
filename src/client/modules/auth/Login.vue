@@ -47,6 +47,7 @@
 
 	import { User } from '../../../shared/models/User';
 	import { apiService } from '../../services/api';
+	import { sessionService } from '../../services/session';
 	import { modalService } from 'udany-toolbox/vue/ui/Modal/modalService';
 
 	export default defineComponent({
@@ -63,6 +64,7 @@
 
 			async function login() {
 				if (await apiService.auth.login(user)) {
+					await sessionService.load();
 					router.push('home');
 				} else {
 					modalService.alert({ icon: 'times', title: 'Error', message: 'Invalid credentials' });
