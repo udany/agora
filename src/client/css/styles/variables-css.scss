@@ -6,6 +6,16 @@
 }
 
 :root {
+	// Typography
+	--font-size-xxl: #{$font-size-xxl};
+	--font-size-xl: #{$font-size-xl};
+	--font-size-lg: #{$font-size-lg};
+	--font-size-md: #{$font-size-md};
+	--font-size-sm: #{$font-size-sm};
+	--font-size-xs: #{$font-size-xs};
+	--font-size-xxs: #{$font-size-xxs};
+
+
 	// Colors
 	--neutral-darkest: #{$neutral-darkest};
 	--neutral-darkest-h: #{hue($neutral-darkest)};

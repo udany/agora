@@ -7,8 +7,14 @@
 		&.primary {
 			--button-icon-color: var(--primary);
 		}
+
 		&.secondary {
 			--button-icon-color: var(--secondary);
+		}
+
+		&.large {
+			font-size: var(--font-size-sm);
+			padding: var(--spacer-2) var(--spacer-4);
 		}
 	}
 }

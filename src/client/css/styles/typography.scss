@@ -13,6 +13,14 @@ body {
 
 p {
 	line-height: 1.5em;
+
+	+ p {
+		margin-top: var(--spacer-2);
+	}
+}
+
+b {
+	font-weight: bolder;
 }
 
 // Headers
