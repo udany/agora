@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import { sessionService } from '../../services/session';
+import { redirectHomeIfLoggedIn } from '../../services/session';
 
 export const AuthRoutes: Record<string, RouteRecordRaw> = {
 	login: {
@@ -9,12 +9,7 @@ export const AuthRoutes: Record<string, RouteRecordRaw> = {
 		meta: {
 			public: true
 		},
-		async beforeEnter() {
-			await sessionService.loaded;
-			if (sessionService.session.user) {
-				return { path: '/' }
-			}
-		}
+		beforeEnter: redirectHomeIfLoggedIn
 	},
 	register: {
 		path: `/register`,
@@ -23,12 +18,7 @@ export const AuthRoutes: Record<string, RouteRecordRaw> = {
 		meta: {
 			public: true
 		},
-		async beforeEnter() {
-			await sessionService.loaded;
-			if (sessionService.session.user) {
-				return { path: '/' }
-			}
-		}
+		beforeEnter: redirectHomeIfLoggedIn
 	},
 }
 

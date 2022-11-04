@@ -1,10 +1,10 @@
 import { User } from '../../shared/models/User';
 import { apiService } from './api';
+import { HomeRoutes } from '../modules/home/routes';
 
 interface SessionData {
 	user: User
 }
-
 
 class SessionService {
 	loaded: Promise<boolean>|boolean = false;
@@ -30,3 +30,10 @@ class SessionService {
 }
 
 export const sessionService = new SessionService();
+
+export async function redirectHomeIfLoggedIn() {
+	await sessionService.loaded;
+	if (sessionService.session.user) {
+		return HomeRoutes.home;
+	}
+}
