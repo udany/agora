@@ -6,7 +6,7 @@ export const HomeRoutes: Record<string, RouteRecordRaw> = {
 	home: {
 		path: `${baseRoute}`,
 		name: 'home',
-		component: () => import('./Index.vue')
+		component: () => import('./Home.vue')
 	},
 }
 

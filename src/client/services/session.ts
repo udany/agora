@@ -1,6 +1,6 @@
 import { User } from '../../shared/models/User';
 import { apiService } from './api';
-import { HomeRoutes } from '../modules/home/routes';
+import { NavigationGuardWithThis } from 'vue-router';
 
 interface SessionData {
 	user: User
@@ -31,9 +31,17 @@ class SessionService {
 
 export const sessionService = new SessionService();
 
-export async function redirectHomeIfLoggedIn() {
+export const redirectHomeIfLoggedIn: NavigationGuardWithThis<undefined> = async function (to, from) {
 	await sessionService.loaded;
 	if (sessionService.session.user) {
-		return HomeRoutes.home;
+		return { name: 'home' };
+	}
+}
+
+export const protectNonPublicRoutes: NavigationGuardWithThis<undefined> = async function (to, from) {
+	await sessionService.loaded;
+
+	if (!sessionService.session.user && !to.meta.public) {
+		return { name: 'index' };
 	}
 }
