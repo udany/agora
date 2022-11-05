@@ -11,7 +11,7 @@ The project is entirely contained within the `src` folder,
 within it are the two core locations `api` and `client`.
 
 ### Api
-No surprises here, all the js files within the `routes`
+No surprises here, all the js and ts files within the `routes`
 folder are registered by default on startup, if there's
 need, you may edit the `registerApi()` function over at
 `index.js` to alter this behavior.
@@ -50,7 +50,7 @@ The idea is to group the project's domains within modules,
 with every module aggregating their related components,
 assets, etc.
 
-Every module may contain a `routes.js` file which exports
+Every module may contain a `routes.ts` file which exports
 an array of [route definition](https://next.router.vuejs.org/api/#routerecordraw)
 objects.
 
