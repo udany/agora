@@ -1,3 +1,4 @@
+import { reactive } from 'vue';
 import { User } from '../../shared/models/User';
 import { apiService } from './api';
 import { NavigationGuardWithThis } from 'vue-router';
@@ -9,9 +10,9 @@ interface SessionData {
 class SessionService {
 	loaded: Promise<boolean>|boolean = false;
 
-	session: SessionData = {
+	session: SessionData = reactive({
 		user: null
-	};
+	});
 
 	async load() {
 		let ack;
