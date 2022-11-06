@@ -14,7 +14,7 @@
 
 				<div style="display: flex; justify-content: space-between; align-items: center;">
 					<BaseButton
-						type="submit" icon="angle-right" class="primary"
+						type="submit" icon="angle-right" class="primary large"
 						@click.prevent="login"
 						:disabled="loading"
 					>
@@ -24,7 +24,7 @@
 					<div class="text-xs">or</div>
 
 					<BaseButton
-						type="submit" icon="pencil-alt" class="secondary"
+						type="submit" icon="pencil-alt" class="secondary large"
 						@click.prevent="register"
 						:disabled="loading"
 					>
@@ -83,7 +83,7 @@
 
 <style lang="scss" scoped>
 	.login-form {
-		max-width: 250px;
+		max-width: 300px;
 		margin: var(--spacer-3) auto;
 
 		> * + * {
