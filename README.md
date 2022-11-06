@@ -1,3 +1,5 @@
+<div align="center"><img src="https://github.com/udany/agora/raw/main/src/client/assets/favicon.png" width=250px></div>
+
 # Agora
 
 A simple discussion forum sample app  
