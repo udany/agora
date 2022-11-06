@@ -27,6 +27,8 @@
 <script lang="ts">
 	import { defineComponent } from 'vue';
 
+	// SRC: https://thenounproject.com/icon/chat-1162482/
+
 	export default defineComponent({
 		name: 'MainLogo',
 		props: {

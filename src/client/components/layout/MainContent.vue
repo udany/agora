@@ -1,6 +1,8 @@
 <template>
 	<div class="main-content">
-		<slot></slot>
+		<div class="inner">
+			<slot></slot>
+		</div>
 	</div>
 </template>
 
@@ -16,8 +18,10 @@
 	.main-content {
 		max-width: 768px;
 		background: var(--neutral-dark);
-
-		padding: var(--spacer-2) var(--spacer-5);
 		margin: var(--spacer-3) auto;
+	}
+
+	.inner {
+		padding: var(--spacer-2) var(--spacer-5);
 	}
 </style>
