@@ -2,7 +2,7 @@
 	<MainContent>
 		<main class="home py-4">
 			<div class="text-center mb-3">
-				<MainLogo style="width: 30%" />
+				<MainLogo style="width: 30%; --logo-fill: var(--neutral-md)" />
 			</div>
 
 			<h1 class="text-center mb-4">Home</h1>

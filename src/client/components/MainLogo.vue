@@ -52,22 +52,19 @@
 		}
 
 		.outer-circle {
-			fill: rgb(112, 84, 188);
-			fill-opacity: 1;
+			fill: var(--logo-fill, var(--secondary));
 		}
+
 		.bubble {
-			fill: rgb(237, 139, 39);
-			fill-opacity: 1;
+			fill: var(--logo-fill, var(--primary));
 		}
 
 		&.white {
 			.outer-circle {
-				fill: var(--neutral-lightest);
-				fill-opacity: 1;
+				--logo-fill: var(--neutral-lightest);
 			}
 			.bubble {
-				fill: var(--neutral-lightest);
-				fill-opacity: 1;
+				--logo-fill: var(--neutral-lightest);
 			}
 		}
 	}
