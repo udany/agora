@@ -1,5 +1,5 @@
 <template>
-	<div class="user-avatar" :style="{ '--avatar-hue': hue+'deg' }">
+	<div class="user-avatar" :class="{ interactive }" :style="{ '--avatar-hue': hue+'deg' }">
 		<div class="inner">
 			<div class="initials">
 				{{ initials }}
@@ -32,7 +32,11 @@
 	export default defineComponent({
 		name: 'UserAvatar',
 		props: {
-			user: User
+			user: User,
+			interactive: {
+				type: Boolean,
+				default: false
+			}
 		},
 		setup(props) {
 			return {
@@ -82,6 +86,8 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%,-50%);
+
+			transition: box-shadow .4s ease;
 		}
 
 		.initials {
@@ -103,10 +109,27 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%,-50%);
+			transition: transform .3s cubic-bezier(.53,-0.78,.55,1.9);
+			transform-origin: 50%;
 
 			.outer-circle {
-				fill: hsl(var(--avatar-hue-i), 90%, 80%);
+				fill: hsl(var(--avatar-hue-i), 90%, 50%);
 				fill-opacity: 1;
+
+			}
+		}
+
+		&.interactive {
+			cursor: pointer;
+
+			&:hover {
+				.inner {
+					box-shadow: 0 0 calc(var(--avatar-size-i) * .5) hsla(var(--avatar-hue-i), 90%, 50%, .5);
+				}
+
+				svg {
+					transform: translate(-50%,-50%) scale(1.1);
+				}
 			}
 		}
 	}
