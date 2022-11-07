@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, reactive } from 'vue';
+	import { defineComponent, onMounted, reactive, watch } from 'vue';
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
 	import AutoResizer from 'udany-toolbox/vue/ui/AutoResizer/AutoResizer.vue';
 	import MainContent from '../../components/layout/MainContent.vue';
@@ -59,10 +59,18 @@
 				post: new Post()
 			});
 
-			onMounted(async () => {
+			async function loadPost() {
 				if (route.params.id) {
 					data.post = await apiService.post.get(parseInt(route.params.id as string));
 				}
+			}
+
+			onMounted(() => {
+				loadPost();
+			});
+
+			watch(() => route.params.id, () => {
+				loadPost();
 			});
 
 			return {
