@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts">
-	import { onBeforeUnmount, onMounted, reactive, ref, watch, defineComponent } from 'vue';
+	import { onBeforeUnmount, onMounted, reactive, ref, watch, defineComponent, computed } from 'vue';
 	import { schema } from './prosemirror';
 	import { EditorState } from 'prosemirror-state';
 	import { EditorView } from 'prosemirror-view';
@@ -93,13 +93,14 @@
 	import { PlaceholderPlugin } from './plugins/placeholder';
 	import { TabIndexPlugin } from './plugins/tabindex';
 	import { useState } from './plugins/state';
+	import { Node } from 'prosemirror-model';
 
 	export default defineComponent({
 		name: 'TextComposer',
 		emits: [
 			'focus', 'blur',
 			'selectionChange',
-			'newBlock'
+			'update:modelValue'
 		],
 		props: {
 			inline: {
@@ -117,6 +118,10 @@
 			tabindex: {
 				type: String,
 				default: '1'
+			},
+			modelValue: {
+				type: Object,
+				default: null
 			}
 		},
 		components: { IconButton },
@@ -131,9 +136,14 @@
 			const hist = history();
 
 			const editorState = useState();
-			// watch(() => selection.selected, () => {
-			// 	ctx.emit('selectionChange', { selection, view })
-			// })
+
+			watch(() => editorState.selected, () => {
+				ctx.emit('selectionChange', { editorState, view })
+			});
+
+			watch(() => editorState.content, () => {
+				ctx.emit('update:modelValue', editorState.content);
+			});
 
 			const currentKeymap = {
 				...baseKeymap,
@@ -152,16 +162,29 @@
 			}
 
 			onMounted(() => {
-				state = EditorState.create({
-					schema,
-					plugins: [
-						hist,
-						keymap(currentKeymap),
-						PlaceholderPlugin(props.placeholder),
-						TabIndexPlugin(props.tabindex),
-						editorState.plugin()
-					]
-				});
+				if (props.modelValue) {
+					state = EditorState.create({
+						plugins: [
+							hist,
+							keymap(currentKeymap),
+							PlaceholderPlugin(props.placeholder),
+							TabIndexPlugin(props.tabindex),
+							editorState.plugin()
+						],
+						doc: Node.fromJSON(schema, props.modelValue)
+					});
+				} else {
+					state = EditorState.create({
+						schema,
+						plugins: [
+							hist,
+							keymap(currentKeymap),
+							PlaceholderPlugin(props.placeholder),
+							TabIndexPlugin(props.tabindex),
+							editorState.plugin()
+						]
+					});
+				}
 
 				view = new EditorView(root.value, {
 					state,
@@ -173,8 +196,8 @@
 						focus() {
 							data.focused = true;
 							ctx.emit('focus');
-						}
-					}
+						},
+					},
 				});
 
 				if (props.focus) view.focus();

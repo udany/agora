@@ -8,6 +8,8 @@ import { schema } from '../prosemirror';
 declare type Position = { x: number, y: number};
 declare type Rectangle = Position & { w: number, h: number };
 export declare type ProseMirrorState = {
+	content: Object,
+
 	selected: boolean,
 	selection: object,
 
@@ -27,14 +29,7 @@ export function useState():ProseMirrorState {
 	let lastState: EditorState = null;
 
 	function updateSelection(view: EditorView) {
-		let state = view.state;
-
-		// Don't do anything if the document/selection didn't change
-		if (lastState && lastState.doc.eq(state.doc) &&
-			lastState.selection.eq(state.selection)) return;
-
-		// Update last processed state
-		lastState = state;
+		const { state } = view;
 
 		editorState.selection = state.selection;
 
@@ -106,12 +101,25 @@ export function useState():ProseMirrorState {
 	}
 
 	function update(view: EditorView) {
-		updateSelection(view);
-		updateMarks(view);
-		updateNode(view);
+		const { state } = view;
+
+		// Don't do anything if the document/selection didn't change
+		if (!lastState || !lastState.doc.eq(state.doc)) {
+			if (!lastState?.selection.eq(state.selection)) {
+				updateSelection(view);
+				updateMarks(view);
+				updateNode(view);
+			}
+
+			// Update last processed state
+			lastState = state;
+
+			editorState.content = view.state.doc.toJSON();
+		}
 	}
 
 	let editorState = reactive<ProseMirrorState>({
+		content: {},
 		selected: false,
 		selection: null,
 
