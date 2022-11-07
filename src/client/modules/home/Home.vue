@@ -11,7 +11,6 @@
 				<router-link :to="postNewRoute">
 					<BaseButton
 						type="submit" icon="pencil-alt" class="primary large"
-						:disabled="loading"
 					>
 						Writing your first post?
 					</BaseButton>

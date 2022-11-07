@@ -24,7 +24,6 @@
 				<router-link to="login">
 					<BaseButton
 						type="submit" icon="key" class="primary large"
-						:disabled="loading"
 					>
 						Login
 					</BaseButton>
@@ -35,7 +34,6 @@
 				<router-link to="register">
 					<BaseButton
 						type="submit" icon="pencil-alt" class="primary large"
-						:disabled="loading"
 					>
 						Register
 					</BaseButton>
