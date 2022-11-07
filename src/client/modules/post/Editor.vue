@@ -4,8 +4,8 @@
 			<TextComposer placeholder="Title" />
 		</h1>
 
-		<main class="home pt-0">
-			<TextComposer multiline placeholder="Every story starts with typing a single character..." />
+		<main class="home pt-4">
+			<TextComposer multiline focus placeholder="Every story starts with typing a single character..." />
 		</main>
 	</MainContent>
 </template>

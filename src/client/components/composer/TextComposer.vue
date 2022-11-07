@@ -4,7 +4,7 @@
 			<IconButton
 				tooltip="Bold"
 
-				:toggled="false"
+				:toggled="editorState.marksToggled.includes('strong')"
 				:disabled="false"
 
 				@mousedown.stop.prevent="commands.bold"
@@ -15,7 +15,7 @@
 			<IconButton
 				tooltip="Italic"
 
-				:toggled="false"
+				:toggled="editorState.marksToggled.includes('em')"
 				:disabled="false"
 
 				@mousedown.stop.prevent="commands.italic"
@@ -26,7 +26,7 @@
 			<IconButton
 				tooltip="Underline"
 
-				:toggled="false"
+				:toggled="editorState.marksToggled.includes('underline')"
 				:disabled="false"
 
 				@mousedown.stop.prevent="commands.underline"
@@ -37,7 +37,7 @@
 			<IconButton
 				tooltip="Strike"
 
-				:toggled="false"
+				:toggled="editorState.marksToggled.includes('strikethrough')"
 				:disabled="false"
 
 				@mousedown.stop.prevent="commands.strikethrough"
@@ -66,8 +66,8 @@
 
 	import IconButton from 'udany-toolbox/vue/ui/Button/IconButton.vue';
 	import { PlaceholderPlugin } from './plugins/placeholder';
-
-	//import { useProseMirrorSelection } from './useProseMirrorSelection';
+	import { TabIndexPlugin } from './plugins/tabindex';
+	import { useState } from './plugins/state';
 
 	export default defineComponent({
 		name: 'TextComposer',
@@ -88,6 +88,10 @@
 			placeholder: {
 				type: String,
 				default: ''
+			},
+			tabindex: {
+				type: String,
+				default: '1'
 			}
 		},
 		components: { IconButton },
@@ -101,7 +105,7 @@
 
 			const hist = history();
 
-			// const selection = useProseMirrorSelection();
+			const editorState = useState();
 			// watch(() => selection.selected, () => {
 			// 	ctx.emit('selectionChange', { selection, view })
 			// })
@@ -111,7 +115,7 @@
 				"Mod-b": toggleMark(schema.marks.strong),
 				"Mod-i": toggleMark(schema.marks.em),
 				"Mod-u": toggleMark(schema.marks.underline),
-				"Mod-tilde": toggleMark(schema.marks.strikethrough),
+				"Mod-/": toggleMark(schema.marks.strikethrough),
 				"Mod-Shift-z": redo,
 				"Mod-z": undo,
 				"Mod-y": redo,
@@ -127,8 +131,9 @@
 					plugins: [
 						hist,
 						keymap(currentKeymap),
-						PlaceholderPlugin(props.placeholder)
-						//selection.plugin()
+						PlaceholderPlugin(props.placeholder),
+						TabIndexPlugin(props.tabindex),
+						editorState.plugin()
 					]
 				});
 
@@ -146,7 +151,7 @@
 					}
 				});
 
-				view.focus();
+				if (props.focus) view.focus();
 			});
 
 			onBeforeUnmount(() => {
@@ -166,6 +171,7 @@
 			return {
 				root,
 				data,
+				editorState,
 				commands
 			}
 		},
@@ -190,7 +196,7 @@
 			cursor: text;
 
 			&.ProseMirror[data-placeholder]::before {
-				color: var(--neutral-light);
+				color: var(--neutral-md);
 				position: absolute;
 				content: attr(data-placeholder);
 				pointer-events: none;
@@ -208,6 +214,8 @@
 			.toolbar {
 				opacity: 1;
 				transform: translateY(0%);
+
+				transition: opacity .3s ease, transform .3s ease;
 			}
 		}
 	}
@@ -220,6 +228,8 @@
 		opacity: 0;
 		transform: translateY(50%);
 
-		transition: opacity .3s ease, transform .3s ease;
+		margin-top: -24px;
+
+		transition: opacity .1s ease, transform .1s ease;
 	}
 </style>
