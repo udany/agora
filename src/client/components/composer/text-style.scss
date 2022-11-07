@@ -1,5 +1,11 @@
-* + p {
+> * + * {
 	margin-top: var(--spacer-3);
+}
+
+h1, h2, h3, h4 {
+	&:not(:first-child) {
+		margin-top: var(--spacer-4);
+	}
 }
 
 b, strong {

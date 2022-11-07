@@ -1,6 +1,6 @@
 import { reactive } from 'vue';
 import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
-import { MarkType } from 'prosemirror-model';
+import { MarkType, Node } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { useEventListener } from '@vueuse/core';
 import { schema } from '../prosemirror';
@@ -11,6 +11,7 @@ export declare type ProseMirrorState = {
 	selected: boolean,
 	selection: object,
 
+	currentNode: Node,
 	marksToggled: string[],
 
 
@@ -61,22 +62,20 @@ export function useState():ProseMirrorState {
 	}
 
 	function hasMark(view: EditorView, mark: MarkType) {
-		const { state, dispatch } = view;
+		const { state } = view;
 
 		let {$cursor, ranges} = state.selection as TextSelection;
 
-		if (dispatch) {
-			if ($cursor) {
-				if (mark.isInSet(state.storedMarks || $cursor.marks()))
-					return true;
-			} else {
-				let has = false, tr = state.tr;
+		if ($cursor) {
+			if (mark.isInSet(state.storedMarks || $cursor.marks()))
+				return true;
+		} else {
+			let has = false, tr = state.tr;
 
-				for (let i = 0; !has && i < ranges.length; i++) {
-					let {$from, $to} = ranges[i]
-					if (state.doc.rangeHasMark($from.pos, $to.pos, mark)) {
-						return true;
-					}
+			for (let i = 0; !has && i < ranges.length; i++) {
+				let {$from, $to} = ranges[i]
+				if (state.doc.rangeHasMark($from.pos, $to.pos, mark)) {
+					return true;
 				}
 			}
 		}
@@ -98,9 +97,18 @@ export function useState():ProseMirrorState {
 		editorState.marksToggled = marksToggled;
 	}
 
+	function updateNode(view: EditorView) {
+		const { state } = view;
+
+		let { $anchor } = state.selection as TextSelection;
+
+		editorState.currentNode = $anchor.node();
+	}
+
 	function update(view: EditorView) {
 		updateSelection(view);
 		updateMarks(view);
+		updateNode(view);
 	}
 
 	let editorState = reactive<ProseMirrorState>({
@@ -108,6 +116,7 @@ export function useState():ProseMirrorState {
 		selection: null,
 
 		marksToggled: [],
+		currentNode: null,
 
 		area: { x: 0, y: 0, w: 0, h: 0 },
 		start: 0,

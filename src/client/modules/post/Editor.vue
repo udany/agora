@@ -1,11 +1,11 @@
 <template>
 	<MainContent>
 		<h1>
-			<TextComposer placeholder="Title" />
+			<TextComposer placeholder="Title" inline />
 		</h1>
 
 		<main class="home pt-4">
-			<TextComposer multiline focus placeholder="Every story starts with typing a single character..." />
+			<TextComposer focus placeholder="Every story starts with typing a single character..." />
 		</main>
 	</MainContent>
 </template>

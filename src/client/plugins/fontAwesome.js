@@ -16,9 +16,9 @@ import {
 	faItalic,
 	faUnderline,
 	faStrikethrough,
-	faAlignLeft,
-	faAlignCenter,
-	faAlignRight,
+	faHeading,
+	faParagraph,
+	faQuoteLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function (app) {
@@ -36,8 +36,8 @@ export default function (app) {
 		faItalic,
 		faUnderline,
 		faStrikethrough,
-		faAlignLeft,
-		faAlignCenter,
-		faAlignRight,
+		faHeading,
+		faParagraph,
+		faQuoteLeft,
 	])
 }

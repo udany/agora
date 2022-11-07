@@ -45,6 +45,31 @@
 				strikethrough
 				<template v-slot:tooltip><s>Strike</s></template>
 			</IconButton>
+
+			<div class="spacer"></div>
+
+			<template v-if="!inline">
+				<IconButton
+					tooltip="Paragraph"
+
+					:toggled="editorState.currentNode?.type.name === 'paragraph'"
+					:disabled="false"
+
+					@mousedown.stop.prevent="commands.paragraph"
+				>
+					paragraph
+				</IconButton>
+				<IconButton
+					tooltip="Heading"
+
+					:toggled="editorState.currentNode?.type.name === 'heading' "
+					:disabled="false"
+
+					@mousedown.stop.prevent="commands.heading"
+				>
+					heading
+				</IconButton>
+			</template>
 		</div>
 
 		<div
@@ -61,7 +86,7 @@
 	import { EditorState } from 'prosemirror-state';
 	import { EditorView } from 'prosemirror-view';
 	import { keymap } from 'prosemirror-keymap';
-	import { baseKeymap, toggleMark } from 'prosemirror-commands';
+	import { baseKeymap, toggleMark, setBlockType } from 'prosemirror-commands';
 	import { history, undo, redo, undoDepth } from 'prosemirror-history';
 
 	import IconButton from 'udany-toolbox/vue/ui/Button/IconButton.vue';
@@ -77,7 +102,7 @@
 			'newBlock'
 		],
 		props: {
-			multiline: {
+			inline: {
 				type: Boolean,
 				default: false
 			},
@@ -116,12 +141,13 @@
 				"Mod-i": toggleMark(schema.marks.em),
 				"Mod-u": toggleMark(schema.marks.underline),
 				"Mod-/": toggleMark(schema.marks.strikethrough),
+				"Mod-h": setBlockType(schema.nodes.heading, { level: 2 }),
 				"Mod-Shift-z": redo,
 				"Mod-z": undo,
 				"Mod-y": redo,
 			}
 
-			if (!props.multiline) {
+			if (props.inline) {
 				currentKeymap.Enter = () => false
 			}
 
@@ -152,6 +178,7 @@
 				});
 
 				if (props.focus) view.focus();
+				console.log(view)
 			});
 
 			onBeforeUnmount(() => {
@@ -164,6 +191,9 @@
 				underline: () => toggleMark(schema.marks.underline)(view.state, view.dispatch),
 				strikethrough: () => toggleMark(schema.marks.strikethrough)(view.state, view.dispatch),
 
+				paragraph: () => setBlockType(schema.nodes.paragraph)(view.state, view.dispatch),
+				heading: () => setBlockType(schema.nodes.heading, { level: 2 })(view.state, view.dispatch),
+
 				undo: () => undo(view.state, view.dispatch),
 				redo: () => redo(view.state, view.dispatch),
 			};
@@ -172,7 +202,9 @@
 				root,
 				data,
 				editorState,
-				commands
+				commands,
+
+				selectedNodeType: ref('')
 			}
 		},
 	})
@@ -185,7 +217,6 @@
 
 		&.focused {
 			background: hsla(var(--neutral-lightest-hsl), .05);
-
 		}
 
 		&::v-deep(div:first-child) {
@@ -216,6 +247,7 @@
 				transform: translateY(0%);
 
 				transition: opacity .3s ease, transform .3s ease;
+				pointer-events: all;
 			}
 		}
 	}
@@ -225,11 +257,22 @@
 		position: sticky;
 		top: 0;
 
+		border-left: 2px solid hsla(var(--neutral-lightest-hsl), .1);
+		margin-left: -2px;
+
 		opacity: 0;
 		transform: translateY(50%);
+
+		display: flex;
 
 		margin-top: -24px;
 
 		transition: opacity .1s ease, transform .1s ease;
+		pointer-events: none;
+
+
+		.spacer {
+			width: var(--spacer-3);
+		}
 	}
 </style>
