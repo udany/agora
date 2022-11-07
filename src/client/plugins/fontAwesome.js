@@ -9,7 +9,16 @@ import {
 	faExclamation,
 	faAngleRight,
 	faPencilAlt,
-	faKey
+	faKey,
+
+	faFont,
+	faBold,
+	faItalic,
+	faUnderline,
+	faStrikethrough,
+	faAlignLeft,
+	faAlignCenter,
+	faAlignRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function (app) {
@@ -20,6 +29,15 @@ export default function (app) {
 		faExclamation,
 		faAngleRight,
 		faPencilAlt,
-		faKey
+		faKey,
+
+		faFont,
+		faBold,
+		faItalic,
+		faUnderline,
+		faStrikethrough,
+		faAlignLeft,
+		faAlignCenter,
+		faAlignRight,
 	])
 }
