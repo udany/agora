@@ -9,9 +9,16 @@ export const postApi = {
 
 		return data;
 	},
+
 	async get(id: number): Promise<Post> {
 		let { data } = await api.get('/post/'+id);
 
 		return new Post().$fill(data);
+	},
+
+	async getByUser(userId: number): Promise<Post[]> {
+		let { data } = await api.get('/post/user/'+userId);
+
+		return data.map(p => new Post().$fill(p));
 	}
 };
