@@ -1,30 +1,70 @@
 <template>
 	<MainContent>
 		<h1>
-			<TextComposer placeholder="Title" inline />
+			<TextComposer v-model="data.post.title" placeholder="Title" inline />
 		</h1>
 
 		<main class="home pt-4">
-			<TextComposer focus placeholder="Every story starts with typing a single character..." />
+			<TextComposer v-model="data.post.body" focus placeholder="Every story starts with typing a single character..." />
 		</main>
+
+		<div class="mt-4 text-end">
+			<BaseButton
+				type="submit" icon="pencil-alt" class="primary large"
+				@click="save"
+			>
+				Publish
+			</BaseButton>
+		</div>
 	</MainContent>
 </template>
 
 <script lang="ts">
-	import { defineComponent, reactive, onMounted } from 'vue';
+	import { defineComponent, onMounted, reactive } from 'vue';
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
 	import MainContent from '../../components/layout/MainContent.vue';
 	import MainLogo from '../../components/MainLogo.vue';
 	import TextComposer from '../../components/composer/TextComposer.vue';
 	import FormInput from '../../components/form/FormInput.vue';
-
+	import { useRoute, useRouter } from 'vue-router';
+	import { Post } from '../../../shared/models/Post';
+	import { apiService } from '../../services/api';
+	import { ComposerRoutes } from './routes';
 
 	export default defineComponent({
 		components: { FormInput, TextComposer, MainLogo, MainContent, BaseButton },
 		Name: 'Home',
 		setup() {
+			const route = useRoute();
+			const router = useRouter();
 
-			return {}
+			let data = reactive({
+				post: new Post()
+			});
+
+			onMounted(() => {
+				if (!route.params.id) {
+
+				}
+			});
+
+			async function save() {
+				let response = await apiService.post.save(data.post);
+
+				data.post.$fill(response);
+
+				router.push({
+					...ComposerRoutes.postEdit,
+					params: {
+						id: data.post.id
+					}
+				});
+			}
+
+			return {
+				data,
+				save
+			}
 		}
 	})
 </script>

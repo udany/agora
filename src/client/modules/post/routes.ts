@@ -4,7 +4,7 @@ const baseRoute = '/post';
 
 export const ComposerRoutes: Record<string, RouteRecordRaw> = {
 	postEdit: {
-		path: `${baseRoute}/:id(\\d+)?-:title?`,
+		path: `${baseRoute}/:id(\\d+)?`,
 		name: 'post-edit',
 		component: () => import('./Editor.vue')
 	}
