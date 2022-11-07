@@ -6,7 +6,15 @@
 					<ComposerView :content="data.post.title" />
 				</h1>
 				<small>
-					Posted by {{ data.post.user.name }}
+					by {{ data.post.user.name }} on {{ data.post.created.format('d/m/Y') }}
+					at {{ data.post.created.format('H:i') }}
+				</small>
+				<small v-if="data.post.edited">
+					and edited
+					<template v-if="data.post.created.format('d/m/Y') != data.post.edited.format('d/m/Y')">
+						on {{ data.post.edited.format('d/m/Y') }}
+					</template>
+					at {{ data.post.edited.format('H:i') }}
 				</small>
 
 				<main class="home pt-4">
@@ -14,7 +22,7 @@
 				</main>
 			</div>
 
-			<div class="mt-4 text-end" v-if="data?.post?.user?.id === session?.user.id">
+			<div class="mt-4 text-end" v-if="data.post?.user?.id === session.user?.id">
 				<router-link :to="{name: 'post-edit', params: {id: data.post.id}}">
 					<BaseButton
 						type="submit" icon="pencil-alt" class="primary large"
@@ -65,4 +73,8 @@
 	})
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+	small {
+		color: var(--neutral-md);
+	}
+</style>

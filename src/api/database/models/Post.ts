@@ -31,6 +31,22 @@ const PostModel = new DatabaseModel({
 			length: 11,
 		}),
 
+		new DatabaseModel.Field.Any({
+			name: 'created',
+			type: 'int',
+			unsigned: true,
+			length: 11,
+			serializeBefore: true,
+		}),
+
+		new DatabaseModel.Field.Any({
+			name: 'edited',
+			type: 'int',
+			unsigned: true,
+			length: 11,
+			serializeBefore: true,
+		}),
+
 		new DatabaseModel.Field.Json({
 			name: 'title',
 			type: 'text',

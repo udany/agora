@@ -23,6 +23,13 @@ router.post('/save', async (req, res, next) => {
 	let post = new Post().$fill(postData);
 	post.userId = user.id;
 
+	if (!post.created) {
+		post.created = new Date();
+	}
+	if (post.id) {
+		post.edited = new Date();
+	}
+
 	await PostModel.save(post);
 
 	res.send(post.$serialize(true));

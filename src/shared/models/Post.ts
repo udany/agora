@@ -7,6 +7,12 @@ export class Post extends Entity {
 	@Entity.Field.Integer()
 	userId: number;
 
+	@Entity.Field.Date()
+	created: Date;
+
+	@Entity.Field.Date()
+	edited: Date;
+
 	@Entity.Field.Json()
 	title: Object;
 	@Entity.Field.Json()
