@@ -9,7 +9,7 @@ router.get('/:id', async (req, res, next) => {
 
 	let post = await PostModel.getById(id);
 
-	res.send(post.$serialize());
+	res.send(post.$serialize(true));
 })
 
 router.post('/save', async (req, res, next) => {
