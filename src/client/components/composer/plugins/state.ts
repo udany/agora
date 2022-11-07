@@ -103,12 +103,13 @@ export function useState():ProseMirrorState {
 	function update(view: EditorView) {
 		const { state } = view;
 
+		updateMarks(view);
+		updateNode(view);
+
 		// Don't do anything if the document/selection didn't change
 		if (!lastState || !lastState.doc.eq(state.doc)) {
 			if (!lastState?.selection.eq(state.selection)) {
 				updateSelection(view);
-				updateMarks(view);
-				updateNode(view);
 			}
 
 			// Update last processed state
