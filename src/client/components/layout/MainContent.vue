@@ -1,7 +1,9 @@
 <template>
-	<div class="main-content">
-		<div class="inner">
-			<slot></slot>
+	<div class="outer">
+		<div class="main-content">
+			<div class="inner">
+				<slot></slot>
+			</div>
 		</div>
 	</div>
 </template>
@@ -15,6 +17,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.outer {
+		width: 100%;
+	}
 	.main-content {
 		max-width: 768px;
 		background: var(--neutral-dark);
@@ -22,6 +27,6 @@
 	}
 
 	.inner {
-		padding: var(--spacer-2) var(--spacer-5);
+		padding: var(--spacer-4) var(--spacer-5);
 	}
 </style>

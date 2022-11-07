@@ -19,8 +19,12 @@ p {
 	}
 }
 
-b {
+b, strong {
 	font-weight: bolder;
+}
+
+i, em {
+	font-style: italic;
 }
 
 // Headers

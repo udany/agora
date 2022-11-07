@@ -42,7 +42,7 @@
 		--bezier: cubic-bezier(.63,-0.05,.44,1.41);
 		max-width: 768px;
 		text-align: left;
-		margin: var(--spacer-3) auto;
+		margin: var(--spacer-3) auto 0;
 		position: relative;
 
 		height: 50px;
