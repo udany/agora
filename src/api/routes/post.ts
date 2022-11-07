@@ -25,7 +25,7 @@ router.post('/save', async (req, res, next) => {
 
 	await PostModel.save(post);
 
-	res.send(post.$serialize());
+	res.send(post.$serialize(true));
 })
 
 export default {

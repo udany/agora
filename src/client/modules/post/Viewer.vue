@@ -1,29 +1,23 @@
 <template>
 	<MainContent>
-		<div :key="data.post.id">
-			<h1>
-				<TextComposer v-model="data.post.title" placeholder="Title" inline />
-			</h1>
+		<AutoResizer>
+			<div :key="data.post.id">
+				<h1>
+					<ComposerView :content="data.post.title" />
+				</h1>
 
-			<main class="home pt-4">
-				<TextComposer v-model="data.post.body" focus placeholder="Every story starts with typing a single character..." />
-			</main>
-		</div>
-
-		<div class="mt-4 text-end">
-			<BaseButton
-				type="submit" icon="pencil-alt" class="primary large"
-				@click="save"
-			>
-				Publish
-			</BaseButton>
-		</div>
+				<main class="home pt-4">
+					<ComposerView :content="data.post.body" />
+				</main>
+			</div>
+		</AutoResizer>
 	</MainContent>
 </template>
 
 <script lang="ts">
 	import { defineComponent, onMounted, reactive } from 'vue';
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
+	import AutoResizer from 'udany-toolbox/vue/ui/AutoResizer/AutoResizer.vue';
 	import MainContent from '../../components/layout/MainContent.vue';
 	import MainLogo from '../../components/MainLogo.vue';
 	import TextComposer from '../../components/composer/TextComposer.vue';
@@ -31,14 +25,14 @@
 	import { useRoute, useRouter } from 'vue-router';
 	import { Post } from '../../../shared/models/Post';
 	import { apiService } from '../../services/api';
-	import { ComposerRoutes } from './routes';
+	import ComposerView from '../../components/composer/ComposerView.vue';
+	import { sessionService } from '../../services/session';
 
 	export default defineComponent({
-		components: { FormInput, TextComposer, MainLogo, MainContent, BaseButton },
+		components: { ComposerView, FormInput, TextComposer, MainLogo, MainContent, BaseButton, AutoResizer },
 		Name: 'Home',
 		setup() {
 			const route = useRoute();
-			const router = useRouter();
 
 			let data = reactive({
 				post: new Post()
@@ -50,22 +44,9 @@
 				}
 			});
 
-			async function save() {
-				let response = await apiService.post.save(data.post);
-
-				data.post.$fill(response);
-
-				router.push({
-					...ComposerRoutes.postView,
-					params: {
-						id: data.post.id
-					}
-				});
-			}
-
 			return {
-				data,
-				save
+				session: sessionService.session,
+				data
 			}
 		}
 	})

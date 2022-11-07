@@ -1,5 +1,4 @@
 import { api } from '../index';
-import { User } from '../../../../shared/models/User';
 import { Post } from '../../../../shared/models/Post';
 
 export const postApi = {
@@ -10,4 +9,9 @@ export const postApi = {
 
 		return data;
 	},
+	async get(id: number): Promise<Post> {
+		let { data } = await api.get('/post/'+id);
+
+		return new Post().$fill(data);
+	}
 };

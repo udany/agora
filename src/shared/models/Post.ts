@@ -1,4 +1,5 @@
 import { Entity } from 'udany-toolbox/modules/base';
+import { User } from './User';
 
 export class Post extends Entity {
 	@Entity.Field.Integer()
@@ -8,6 +9,9 @@ export class Post extends Entity {
 
 	@Entity.Field.Json()
 	title: Object;
-	@Entity.Field.Json({ })
+	@Entity.Field.Json()
 	body: Object;
+
+	@Entity.Field.Entity({ class: User } )
+	user: User;
 }
