@@ -205,7 +205,10 @@
 			});
 
 			onBeforeUnmount(() => {
-				view.destroy();
+				// The timeout prevents flickering when the routes are transitioning
+				setTimeout(() => {
+					view.destroy();
+				}, 500);
 			})
 
 			const commands = {
