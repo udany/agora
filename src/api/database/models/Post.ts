@@ -1,7 +1,9 @@
 import db from '../index';
 
 import { DatabaseModel } from 'udany-toolbox/modules/orm';
-import { DatabaseRelationshipOneToMany } from 'udany-toolbox/modules/orm/DatabaseRelationship';
+import {
+	DatabaseRelationshipManyToOne
+} from 'udany-toolbox/modules/orm/DatabaseRelationship';
 import { Post } from '../../../shared/models/Post';
 import { UserModel } from './User';
 
@@ -43,10 +45,11 @@ const PostModel = new DatabaseModel({
 	],
 
 	relationships: [
-		new DatabaseRelationshipOneToMany({
+		new DatabaseRelationshipManyToOne({
 			externalModel: UserModel,
 			property: 'user',
 			localForeignKey: 'userId',
+			autoload: true
 		})
 	]
 });
