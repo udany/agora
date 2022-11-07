@@ -2,10 +2,8 @@
 	<MainContent>
 		<main class="home py-4">
 			<div class="text-center mb-3">
-				<MainLogo style="width: 30%; --logo-fill: var(--neutral-md)" />
+				<MainLogo style="width: 30%; --logo-fill: hsla(var(--neutral-md-hsl), .2)" />
 			</div>
-
-			<h1 class="text-center mb-4">Home</h1>
 
 			<div style="max-width: 350px; margin: var(--spacer-4) auto 0; display: flex; justify-content: space-between; align-items: center;">
 				<div class="text-xs">How about...</div>
