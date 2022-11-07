@@ -298,7 +298,7 @@
 
 
 		.spacer {
-			width: var(--spacer-3);
+			width: var(--spacer-2);
 		}
 	}
 </style>
