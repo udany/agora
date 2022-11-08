@@ -89,8 +89,9 @@
 				}
 
 				try {
-					let {data} = await apiService.auth.register(user);
-					login();
+					await apiService.auth.register(user);
+
+					await login();
 				} catch ({ response }) {
 					switch (response.status) {
 						case 409:
@@ -103,8 +104,8 @@
 				}
 			}
 
-			function login() {
-				router.push('login');
+			async function login() {
+				return router.push({ name: 'login' });
 			}
 
 			return {

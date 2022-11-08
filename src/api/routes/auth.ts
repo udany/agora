@@ -10,8 +10,6 @@ auth.generateRoutes(router);
 router.post('/register', async (req, res, next) => {
 	let { user: userData }: { user: User } = req.body;
 
-	console.log(userData);
-
 	if (!userData.name || !userData.email || !userData.password) {
 		res.status(400);
 		res.send('Invalid payload');
@@ -46,7 +44,7 @@ router.post('/register', async (req, res, next) => {
 
 	await UserModel.save(user);
 
-	return user.$serialize(true);
+	res.send(user.$serialize(true));
 })
 
 export default {
