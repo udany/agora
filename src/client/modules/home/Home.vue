@@ -61,10 +61,14 @@
 				loading: true
 			});
 
-			onMounted(async () => {
+			async function loadPosts() {
 				let results = await apiService.post.getByUser(sessionService.session.user.id);
 				data.posts.push(...results);
 				data.loading = false;
+			}
+
+			onMounted(() => {
+				loadPosts();
 			})
 
 			return {
