@@ -2,7 +2,7 @@
 	<div class="layout-default">
 		<header :class="{ logged: session.user }">
 			<UserAvatar class="avatar" :user="session.user" interactive @mouseenter="onMouseEnterAvatar" @mouseleave="onMouseLeaveAvatar">
-				<div class="user-menu" :class="{ visible: showUserMenu }">
+				<div v-if="session.user" class="user-menu" :class="{ visible: showUserMenu }">
 					<router-link :to="{...ProfileRoutes.profile, params: {id: session.user.id} }">
 						<FaIcon>user</FaIcon>
 						My profile
@@ -96,6 +96,7 @@
 		position: relative;
 
 		height: 50px;
+		z-index: 10;
 
 		&.logged {
 			.logo {

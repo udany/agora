@@ -22,7 +22,7 @@
 				</main>
 			</div>
 
-			<div class="mt-4 text-end" v-if="data.post?.user?.id === session.user?.id">
+			<div class="mt-4 text-end" v-if="data.post?.id && data.post?.user?.id === session.user?.id">
 				<router-link :to="{name: 'post-edit', params: {id: data.post.id}}">
 					<BaseButton
 						type="submit" icon="pencil-alt" class="primary large"
