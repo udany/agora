@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { User } from '../../../shared/models/User';
+
 import { authApi } from './modules/auth';
 import { postApi } from './modules/post';
+import { userApi } from './modules/user';
 
 export const api = axios.create({
 	baseURL: '/api/'
@@ -9,5 +10,6 @@ export const api = axios.create({
 
 export const apiService = {
 	auth: authApi,
-	post: postApi
+	post: postApi,
+	user: userApi
 };
