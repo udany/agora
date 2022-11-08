@@ -75,6 +75,7 @@
 					hideUserMenuTimer.start();
 				},
 				async logout() {
+					showUserMenu.value = false;
 					await sessionService.logout();
 					if (!route.meta.public) {
 						await router.push({
