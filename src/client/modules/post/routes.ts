@@ -6,7 +6,10 @@ export const ComposerRoutes: Record<string, RouteRecordRaw> = {
 	postView: {
 		path: `${baseRoute}/:id(\\d+)`,
 		name: 'post-view',
-		component: () => import('./Viewer.vue')
+		component: () => import('./Viewer.vue'),
+		meta: {
+			public: true
+		}
 	},
 	postEdit: {
 		path: `${baseRoute}/edit/:id(\\d+)?`,
