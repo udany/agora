@@ -6,6 +6,8 @@
 			</div>
 		</div>
 
+		<slot />
+
 		<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="800" xmlns="http://www.w3.org/2000/svg" height="800"
 			 id="screenshot-d2f5acbb-adcc-808f-8001-8c58f93a0976" viewBox="0 0 800 800"
 			 style="-webkit-print-color-adjust: exact;" fill="none" version="1.1">

@@ -19,6 +19,9 @@ import {
 	faHeading,
 	faParagraph,
 	faQuoteLeft,
+
+	faUser,
+	faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function (app) {
@@ -39,5 +42,8 @@ export default function (app) {
 		faHeading,
 		faParagraph,
 		faQuoteLeft,
+
+		faUser,
+		faSignOutAlt,
 	])
 }

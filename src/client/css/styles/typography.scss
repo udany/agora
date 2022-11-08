@@ -57,20 +57,24 @@ h6 { font-size: $font-size-xs; }
 // Links
 a {
 	color: var(--neutral-lightest);
-	text-shadow: 0 0 5px rgba(0, 0, 0, .5);
 	transition: all 0.5s ease 0s;
 
-	.rb-icon {
-		filter: drop-shadow(0 0 5px rgba(0, 0, 0, .5));
-		transition: filter 0.5s ease 0s;
+	.fa-icon {
+		transition: color .5s ease;
 	}
+
+	--interaction-color: var(--primary);
 
 	&:hover, &:focus {
 		text-decoration: none;
+
+		.fa-icon {
+			color: var(--interaction-color);
+		}
 	}
 }
 
-a:hover, a:focus {
+a, a:hover, a:focus {
 	text-decoration: none !important;
 }
 
