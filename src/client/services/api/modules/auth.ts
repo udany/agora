@@ -7,6 +7,7 @@ export const authApi = {
 			user
 		})
 	},
+
 	async login(user: User): Promise<boolean> {
 		try {
 			let { data } = await api.post('/auth/local', {
@@ -18,6 +19,13 @@ export const authApi = {
 		} catch (e) {
 			console.log(e);
 			return false;
+		}
+	},
+
+	async logout() {
+		try {
+			await api.get('/auth/logout');
+		} catch (e) {
 		}
 	},
 

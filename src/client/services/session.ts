@@ -28,6 +28,11 @@ class SessionService {
 
 		ack(true);
 	}
+
+	async logout() {
+		await apiService.auth.logout();
+		this.session.user = null;
+	}
 }
 
 export const sessionService = new SessionService();
