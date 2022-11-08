@@ -90,6 +90,7 @@
 
 				try {
 					let {data} = await apiService.auth.register(user);
+					login();
 				} catch ({ response }) {
 					switch (response.status) {
 						case 409:
