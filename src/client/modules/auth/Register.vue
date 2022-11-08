@@ -79,7 +79,7 @@
 					modalService.alert({ message: 'Password is a required field' })
 					return;
 				}
-				if (user.password.length <= 12) {
+				if (user.password.length < 12) {
 					modalService.alert({
 						icon: 'key',
 						title: 'Password too short',
