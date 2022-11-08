@@ -9,15 +9,27 @@
 </template>
 
 <script lang="ts">
-	import { onBeforeRouteLeave } from 'vue-router';
-	import { ref } from 'vue';
+	import { onBeforeRouteLeave, useRouter } from 'vue-router';
+	import { onBeforeUnmount, ref } from 'vue';
 
 	export default {
 		name: 'MainContent',
 		setup() {
+			const router = useRouter();
 			let leaving = ref(false);
-			onBeforeRouteLeave(() => {
-				leaving.value = true;
+
+			const removeAfterEachGuard = router.afterEach(() => {
+				leaving.value = false;
+			});
+
+			onBeforeRouteLeave((to, from) => {
+				if (to.path !== from.path) {
+					leaving.value = true;
+				}
+			});
+
+			onBeforeUnmount(() => {
+				removeAfterEachGuard();
 			});
 
 			return {
