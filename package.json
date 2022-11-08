@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "node index.js",
-		"build:node": "babel src --extensions .ts,.js --out-dir dist"
+		"build:node": "babel src --extensions .ts,.js --out-dir src/dist/server",
+		"build:client": "vite build --outDir ../dist/client --ssrManifest"
 	},
 	"author": "",
 	"license": "ISC",
