@@ -8,7 +8,12 @@ router.get('/:id', async (req, res, next) => {
 
 	let user = await UserModel.getById(id);
 
-	res.send(user.$serialize(true));
+	if (user) {
+		res.send(user.$serialize(true));
+	} else {
+		res.status(404);
+		res.send();
+	}
 })
 
 export default {

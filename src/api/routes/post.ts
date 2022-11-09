@@ -10,7 +10,12 @@ router.get('/:id', async (req, res, next) => {
 
 	let post = await PostModel.getById(id);
 
-	res.send(post ? post.$serialize(true) : null);
+	if (post) {
+		res.send(post.$serialize(true));
+	} else {
+		res.status(404);
+		res.send();
+	}
 })
 router.get('/user/:id', async (req, res, next) => {
 	let { id } = req.params;
