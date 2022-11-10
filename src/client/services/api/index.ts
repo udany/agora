@@ -5,7 +5,8 @@ import { postApi } from './modules/post';
 import { userApi } from './modules/user';
 
 export const api = axios.create({
-	baseURL: '/api/'
+	// TODO: Configs, for yesterday!
+	baseURL: 'http://localhost:8420/api/'
 });
 
 export const apiService = {

@@ -36,22 +36,34 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, reactive, watch } from 'vue';
+	import { defineComponent, onServerPrefetch, reactive, watch } from 'vue';
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
 	import AutoResizer from 'udany-toolbox/vue/ui/AutoResizer/AutoResizer.vue';
 	import MainContent from '../../components/layout/MainContent.vue';
 	import MainLogo from '../../components/MainLogo.vue';
 	import TextComposer from '../../components/composer/TextComposer.vue';
 	import FormInput from '../../components/form/FormInput.vue';
-	import { useRoute, useRouter } from 'vue-router';
+	import { useRoute, RouteLocation } from 'vue-router';
 	import { Post } from '../../../shared/models/Post';
 	import { apiService } from '../../services/api';
 	import ComposerView from '../../components/composer/ComposerView.vue';
 	import { sessionService } from '../../services/session';
 
+	async function loadPost(route: RouteLocation) {
+		if (route.params.id) {
+			return await apiService.post.get(parseInt(route.params.id as string));
+		}
+		return null;
+	}
+
 	export default defineComponent({
 		components: { ComposerView, FormInput, TextComposer, MainLogo, MainContent, BaseButton, AutoResizer },
 		Name: 'Home',
+		async beforeRouteEnter(to, from, next) {
+			const post = await loadPost(to);
+
+			next(vm => vm.data.post = post);
+		},
 		setup() {
 			const route = useRoute();
 
@@ -59,18 +71,14 @@
 				post: new Post()
 			});
 
-			async function loadPost() {
-				if (route.params.id) {
-					data.post = await apiService.post.get(parseInt(route.params.id as string));
-				}
-			}
-
-			onMounted(() => {
-				loadPost();
+			onServerPrefetch(async () => {
+				data.post = await loadPost(route);
 			});
 
-			watch(() => route.params.id, () => {
-				loadPost();
+			watch(() => route.params.id, async () => {
+				if (parseInt(route.params.id as string) !== data.post.id) {
+					data.post = await loadPost(route);
+				}
 			});
 
 			return {
