@@ -12,7 +12,8 @@ async function startServer() {
 			enabled: false
 		},
 		ssr: {
-			enabled: false
+			enabled: true,
+			distEntry: './dist/server/entry-server.js'
 		},
 		isProd: true,
 
