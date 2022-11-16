@@ -1,7 +1,7 @@
-export function getDocument() {
+export async function getDocument() {
 	// @ts-ignore
 	if (import.meta.env.SSR) {
-		const jsdom = require("jsdom");
+		const jsdom = await import("jsdom");
 		const { JSDOM } = jsdom;
 		const { window } = new JSDOM(`<!DOCTYPE html><p>Hey</p>`);
 

@@ -28,8 +28,8 @@
 		"prosemirror-view": "^1.27.2",
 		"udany-base-configs": "construimos/udany-base-configs#typescript",
 		"udany-toolbox": "construimos/udany-toolbox#typescript",
-		"vue": "^3.2.37",
-		"vue-router": "^4.1.1"
+		"vue": "^3.2.45",
+		"vue-router": "^4.1.6"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.16.0"

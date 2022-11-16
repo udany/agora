@@ -13,9 +13,9 @@ async function startServer() {
 		},
 		ssr: {
 			enabled: true,
-			distEntry: './dist/server/entry-server.js'
+			distEntry: './dist/server/entry-server.mjs'
 		},
-		isProd: true,
+		isProd: false,
 
 		port: 8420,
 
