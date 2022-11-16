@@ -1,7 +1,7 @@
 import createApp from './main.js';
 
 export async function render(url) {
-	const { app, router } = createApp();
+	const { app, router } = await createApp();
 
 	// set the router to the desired URL before rendering
 	router.push(url);

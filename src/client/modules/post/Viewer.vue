@@ -1,26 +1,24 @@
 <template>
 	<MainContent>
-		<AutoResizer>
-			<div v-if="data.post.id">
-				<h1>
-					<ComposerView :content="data.post.title" />
-				</h1>
-				<small>
-					by {{ data.post.user.name }} on {{ data.post.created.format('d/m/Y') }}
-					at {{ data.post.created.format('H:i') }}
-				</small>
-				<small v-if="data.post.edited">
-					and edited
-					<template v-if="data.post.created.format('d/m/Y') != data.post.edited.format('d/m/Y')">
-						on {{ data.post.edited.format('d/m/Y') }}
-					</template>
-					at {{ data.post.edited.format('H:i') }}
-				</small>
+		<AutoResizer v-if="data.post.id">
+			<h1>
+				<ComposerView :content="data.post.title" />
+			</h1>
+			<small>
+				by {{ data.post.user.name }} on {{ data.post.created.format('d/m/Y') }}
+				at {{ data.post.created.format('H:i') }}
+			</small>
+			<small v-if="data.post.edited">
+				and edited
+				<template v-if="data.post.created.format('d/m/Y') != data.post.edited.format('d/m/Y')">
+					on {{ data.post.edited.format('d/m/Y') }}
+				</template>
+				at {{ data.post.edited.format('H:i') }}
+			</small>
 
-				<main class="home pt-4">
-					<ComposerView :content="data.post.body" />
-				</main>
-			</div>
+			<main class="home pt-4">
+				<ComposerView :content="data.post.body" />
+			</main>
 
 			<div class="mt-4 text-end" v-if="data.post?.id && data.post?.user?.id === session.user?.id">
 				<router-link :to="{name: 'post-edit', params: {id: data.post.id}}">

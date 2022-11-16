@@ -1,7 +1,9 @@
 import createApp from './main.js';
 
-const { app, router } = createApp();
+(async function() {
+	const { app, router } = await createApp();
 
-router.isReady().then(() => {
-	app.mount('#app');
-})
+	router.isReady().then(() => {
+		app.mount('#app');
+	})
+})();

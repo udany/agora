@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onMounted, ref, watch } from 'vue';
+	import { defineComponent, inject, ref, watch } from 'vue';
 	import { contentToHtml } from './contentToHtml';
 
 	export default defineComponent({
@@ -13,22 +13,22 @@
 		props: {
 			content: Object
 		},
-		async setup(props) {
+		setup(props) {
 			let html = ref('');
 
-			async function updateHtml() {
+			function updateHtml() {
 				if (props.content) {
-					html.value = await contentToHtml(props.content);
+					html.value = contentToHtml(props.content, inject('document'));
 				} else {
 					html.value = '';
 				}
 			}
 
 			watch(() => props.content, async () => {
-				await updateHtml();
+				updateHtml();
 			});
 
-			await updateHtml();
+			updateHtml();
 
 			return {
 				html
