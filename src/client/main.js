@@ -7,7 +7,7 @@ import plugins from './plugins';
 import { sessionService, protectNonPublicRoutes } from './services/session';
 
 async function createApp() {
-	sessionService.load();
+	await sessionService.load();
 
 	const app = createSSRApp(App);
 	app.use(plugins);
