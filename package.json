@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "node index.js",
 		"prod": "SET NODE_ENV=production&&node index.js",
+		"cloud": "pm2 restart ecosystem.config.js --env production",
 
 		"build": "npm run build:client && npm run build:server",
 		"build:client": "vite build --outDir ../dist/client --emptyOutDir --ssrManifest",
