@@ -5,7 +5,11 @@ export async function render(url, {
 	req
 } = {}) {
 	// Forwards cookies
-	if (req.headers.cookie) api.defaults.headers.common.cookie = req.headers.cookie;
+	if (req.headers.cookie) {
+		api.defaults.headers.common.cookie = req.headers.cookie;
+	} else {
+		api.defaults.headers.common = {};
+	}
 
 	const { app, router } = await createApp();
 
