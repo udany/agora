@@ -1,6 +1,6 @@
 import path from 'path';
 import db from './database';
-import { serverConfig } from './config.js';
+import { serverConfig } from './config';
 let glob = require('fast-glob');
 
 const routesDir = (__dirname + '\\routes').replace(/\\/g, `/`);
