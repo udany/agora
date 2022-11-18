@@ -1,4 +1,4 @@
-import { Environment } from '../../shared/environment';
+import { Environment } from '../shared/environment';
 
 export const config = {
 	environment: Environment[import.meta.env.MODE],
