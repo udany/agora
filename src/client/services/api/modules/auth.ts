@@ -1,4 +1,4 @@
-import { api } from '../index';
+import { api } from '../api';
 import { User } from '../../../../shared/models/User';
 
 export const authApi = {

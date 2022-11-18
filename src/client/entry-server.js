@@ -1,5 +1,5 @@
 import createApp from './main.js';
-import { api } from './services/api';
+import { api } from './services/api/api';
 
 export async function render(url, {
 	req

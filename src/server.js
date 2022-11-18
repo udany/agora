@@ -11,11 +11,11 @@ async function startServer() {
 		https: {
 			enabled: false
 		},
+
 		ssr: {
 			enabled: true,
 			distEntry: './dist/server/entry-server.mjs'
 		},
-		isProd: false,
 
 		port: 8420,
 

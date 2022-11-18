@@ -5,9 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "node index.js",
-		"build:node": "babel src --extensions .ts,.js --out-dir src/dist/server",
+		"prod": "SET NODE_ENV=production&&node index.js",
+		"build": "npm run build:client && npm run build:server",
 		"build:client": "vite build --outDir ../dist/client --emptyOutDir --ssrManifest",
-		"build:server": "vite build --outDir ../dist/server --emptyOutDir --ssr entry-server.js"
+		"build:server": "vite build --outDir ../dist/server --emptyOutDir --ssr entry-server.js",
+		"build:node": "babel src --extensions .ts,.js --out-dir src/dist/server"
 	},
 	"author": "",
 	"license": "ISC",
