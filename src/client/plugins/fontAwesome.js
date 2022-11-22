@@ -1,4 +1,5 @@
-import '@fortawesome/fontawesome-svg-core'
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import '@fortawesome/vue-fontawesome';
 import fontAwesomePlugin from 'udany-toolbox/vue/ui/FontAwesome/plugin.ts';
 
@@ -25,6 +26,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function (app) {
+	config.autoAddCss = false;
 	fontAwesomePlugin(app, [
 		faTimes,
 		faQuestion,
