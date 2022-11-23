@@ -1,6 +1,6 @@
 <template>
 	<MainContent>
-		<AutoResizer>
+		<AutoResizer :overflow-hidden="false">
 			<div :key="data.post.id">
 				<h1>
 					<TextComposer v-model="data.post.title" placeholder="Title" inline />
