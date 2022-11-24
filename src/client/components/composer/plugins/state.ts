@@ -142,13 +142,15 @@ export function useState():ProseMirrorState {
 		}
 	});
 
-	useEventListener(document, 'selectionchange', async () => {
-		const docSelection = window.getSelection();
+	if (!import.meta.env.SSR) {
+		useEventListener(document, 'selectionchange', async () => {
+			const docSelection = window.getSelection();
 
-		if (docSelection.isCollapsed) {
-			editorState.selected = false;
-		}
-	});
+			if (docSelection.isCollapsed) {
+				editorState.selected = false;
+			}
+		});
+	}
 
 	return editorState;
 }
