@@ -19,3 +19,7 @@ i, em {
 code {
 	font-family: monospace;
 }
+
+a {
+	text-decoration: underline var(--secondary) dotted 2px !important;
+}

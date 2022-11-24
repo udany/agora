@@ -20,6 +20,7 @@ import {
 	faHeading,
 	faParagraph,
 	faQuoteLeft,
+	faLink,
 
 	faUser,
 	faSignOutAlt,
@@ -44,6 +45,7 @@ export default function (app) {
 		faHeading,
 		faParagraph,
 		faQuoteLeft,
+		faLink,
 
 		faUser,
 		faSignOutAlt,
