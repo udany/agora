@@ -21,5 +21,10 @@ code {
 }
 
 a {
+	cursor: pointer;
 	text-decoration: underline var(--secondary) dotted 2px !important;
+
+	&:hover {
+		text-decoration-color: hsl(var(--secondary-hs), 60%) !important;
+	}
 }
