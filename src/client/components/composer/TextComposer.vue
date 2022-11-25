@@ -45,6 +45,16 @@
 				strikethrough
 				<template v-slot:tooltip><s>Strike</s></template>
 			</IconButton>
+			<IconButton
+				tooltip="Link"
+
+				:toggled="editorState.marksToggled.includes('link')"
+				:disabled="false"
+
+				@mousedown.stop.prevent="commands.link"
+			>
+				link
+			</IconButton>
 
 			<div class="spacer"></div>
 
@@ -82,12 +92,11 @@
 
 <script lang="ts">
 	import { onBeforeUnmount, onMounted, reactive, ref, watch, defineComponent, computed } from 'vue';
-	import { schema } from './prosemirror';
+	import { commands, customKeymap, schema } from './prosemirror';
 	import { EditorState } from 'prosemirror-state';
 	import { EditorView } from 'prosemirror-view';
 	import { keymap } from 'prosemirror-keymap';
-	import { baseKeymap, toggleMark, setBlockType } from 'prosemirror-commands';
-	import { history, undo, redo, undoDepth } from 'prosemirror-history';
+	import { history } from 'prosemirror-history';
 
 	import IconButton from 'udany-toolbox/vue/ui/Button/IconButton.vue';
 	import { PlaceholderPlugin } from './plugins/placeholder';
@@ -146,43 +155,33 @@
 			});
 
 			const currentKeymap = {
-				...baseKeymap,
-				"Mod-b": toggleMark(schema.marks.strong),
-				"Mod-i": toggleMark(schema.marks.em),
-				"Mod-u": toggleMark(schema.marks.underline),
-				"Mod-/": toggleMark(schema.marks.strikethrough),
-				"Mod-h": setBlockType(schema.nodes.heading, { level: 2 }),
-				"Mod-Shift-z": redo,
-				"Mod-z": undo,
-				"Mod-y": redo,
+				...customKeymap
 			}
 
 			if (props.inline) {
 				currentKeymap.Enter = () => false
 			}
 
+			const plugins = [
+				hist,
+				keymap(currentKeymap),
+				PlaceholderPlugin(props.placeholder),
+				TabIndexPlugin(props.tabindex),
+				editorState.plugin()
+			];
+
 			onMounted(() => {
 				if (props.modelValue) {
+					// Create from loaded doc
 					state = EditorState.create({
-						plugins: [
-							hist,
-							keymap(currentKeymap),
-							PlaceholderPlugin(props.placeholder),
-							TabIndexPlugin(props.tabindex),
-							editorState.plugin()
-						],
+						plugins,
 						doc: Node.fromJSON(schema, props.modelValue)
 					});
 				} else {
+					// Create blank doc
 					state = EditorState.create({
-						schema,
-						plugins: [
-							hist,
-							keymap(currentKeymap),
-							PlaceholderPlugin(props.placeholder),
-							TabIndexPlugin(props.tabindex),
-							editorState.plugin()
-						]
+						schema: schema,
+						plugins
 					});
 				}
 
@@ -209,26 +208,28 @@
 				setTimeout(() => {
 					view.destroy();
 				}, 500);
-			})
+			});
 
-			const commands = {
-				bold: () => toggleMark(schema.marks.strong)(view.state, view.dispatch),
-				italic: () => toggleMark(schema.marks.em)(view.state, view.dispatch),
-				underline: () => toggleMark(schema.marks.underline)(view.state, view.dispatch),
-				strikethrough: () => toggleMark(schema.marks.strikethrough)(view.state, view.dispatch),
+			const viewCommands = {
+				bold: () => commands.bold(view.state, view.dispatch),
+				italic: () => commands.italic(view.state, view.dispatch),
+				underline: () => commands.underline(view.state, view.dispatch),
+				strikethrough: () => commands.strikethrough(view.state, view.dispatch),
 
-				paragraph: () => setBlockType(schema.nodes.paragraph)(view.state, view.dispatch),
-				heading: () => setBlockType(schema.nodes.heading, { level: 2 })(view.state, view.dispatch),
+				paragraph: () => commands.paragraph(view.state, view.dispatch),
+				heading: () => commands.heading(view.state, view.dispatch),
 
-				undo: () => undo(view.state, view.dispatch),
-				redo: () => redo(view.state, view.dispatch),
+				link: () => commands.link(view.state, view.dispatch),
+
+				undo: () => commands.undo(view.state, view.dispatch),
+				redo: () => commands.redo(view.state, view.dispatch),
 			};
 
 			return {
 				root,
 				data,
 				editorState,
-				commands,
+				commands: viewCommands,
 
 				selectedNodeType: ref('')
 			}
@@ -279,6 +280,8 @@
 	}
 
 	.toolbar {
+		background: hsla(var(--neutral-darkest-hsl), .8);
+		backdrop-filter: blur(2px);
 		font-size: var(--font-size-md);
 		position: sticky;
 		top: 0;
@@ -296,6 +299,7 @@
 		transition: opacity .1s ease, transform .1s ease;
 		pointer-events: none;
 
+		padding: var(--spacer-1) 0;
 
 		.spacer {
 			width: var(--spacer-2);
