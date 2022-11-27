@@ -1,6 +1,9 @@
-import { Command, EditorState, TextSelection } from 'prosemirror-state';
+import { Command, EditorState, TextSelection, Transaction } from 'prosemirror-state';
 import { schema } from '../schema';
 import { Mark, Node, ResolvedPos } from 'prosemirror-model';
+
+import { modalService } from 'udany-toolbox/vue/ui/Modal/modalService';
+import LinkModal from './LinkModal.vue';
 
 declare type LinkMark = Mark & {
 	attrs: {
@@ -22,6 +25,12 @@ const hasSameLink = (index: number, parent: Node, currentLink: Mark) => {
 declare type SimpleRange = {
 	start: number,
 	end: number
+}
+
+export declare type LinkData = {
+	href: string,
+	title: string,
+	text: string
 }
 
 function getLinkRange(state: EditorState, currentLink: LinkMark, $cursor: ResolvedPos): SimpleRange {
@@ -58,6 +67,34 @@ function getLinkRange(state: EditorState, currentLink: LinkMark, $cursor: Resolv
 	return { start, end };
 }
 
+function editLink (state: EditorState, dispatch: (tr: Transaction) => void, currentLink: LinkMark, range: SimpleRange) {
+	const text = state.doc.textBetween(range.start, range.end);
+
+	modalService.new({
+		component: LinkModal,
+		attributes: {
+			text: text,
+			href: currentLink.attrs.href,
+			title: currentLink.attrs.title,
+		},
+		listeners: {
+			save: (data: LinkData) => {
+				const tr = state.tr;
+
+				tr.removeMark(range.start, range.end, link);
+				tr.addMark(range.start, range.end, link.create({
+					href: data.href,
+					title: data.title
+				}));
+				tr.setSelection(TextSelection.create(tr.doc, range.start, range.end));
+
+				dispatch(tr);
+			}
+		},
+		closeOnClickOutside: false
+	}).open();
+}
+
 export const triggerLink:Command = (state, dispatch) => {
 	let {$cursor, ranges} = state.selection as TextSelection;
 
@@ -92,14 +129,11 @@ export const triggerLink:Command = (state, dispatch) => {
 			// There's already a link
 			let currentLink = getLinkFromMarks($cursor.marks());
 
-			const { start, end } = getLinkRange(state, currentLink, $cursor);
+			const linkRange = getLinkRange(state, currentLink, $cursor);
 
-			const tr = state.tr;
-			tr.setSelection(TextSelection.create(tr.doc, start, end));
-
-			dispatch(tr);
-
-			return true;
+			editLink(state, dispatch, currentLink, linkRange);
 		}
 	}
+
+	return true;
 }
