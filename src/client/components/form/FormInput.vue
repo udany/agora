@@ -26,7 +26,12 @@
 		transition: border-bottom-color .6s;
 
 		&:focus {
-			border-bottom: 1px solid var(--primary);
+			border-bottom-color: var(--primary);
+		}
+
+		&[disabled] {
+			opacity: .8;
+			border-bottom-color: var(--neutral-md);
 		}
 	}
 </style>

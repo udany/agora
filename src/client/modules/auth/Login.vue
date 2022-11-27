@@ -3,7 +3,7 @@
 		<div class="login">
 			<h1 class="text-center">Login</h1>
 
-			<div class="login-form">
+			<FormWrapper class="login-form" @submit="login">
 				<FormField for="email" label="Email">
 					<FormInput id="email" v-model="user.email" />
 				</FormField>
@@ -31,7 +31,7 @@
 						Register
 					</BaseButton>
 				</div>
-			</div>
+			</FormWrapper>
 		</div>
 	</MainContent>
 </template>
@@ -49,9 +49,10 @@
 	import { apiService } from '../../services/api';
 	import { sessionService } from '../../services/session';
 	import { modalService } from 'udany-toolbox/vue/ui/Modal/modalService';
+	import FormWrapper from '../../components/form/FormWrapper.vue';
 
 	export default defineComponent({
-		components: { FormInput, FormField, MainContent, BaseButton },
+		components: { FormWrapper, FormInput, FormField, MainContent, BaseButton },
 		Name: 'Home',
 		setup() {
 			const router = useRouter();
