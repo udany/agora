@@ -67,7 +67,7 @@ function getLinkRange(state: EditorState, currentLink: LinkMark, $cursor: Resolv
 	return { start, end };
 }
 
-function editLink (state: EditorState, dispatch: (tr: Transaction) => void, currentLink: LinkMark, range: SimpleRange) {
+function editLink(state: EditorState, dispatch: (tr: Transaction) => void, currentLink: LinkMark, range: SimpleRange) {
 	const text = state.doc.textBetween(range.start, range.end);
 
 	modalService.new({
@@ -89,6 +89,56 @@ function editLink (state: EditorState, dispatch: (tr: Transaction) => void, curr
 				tr.setSelection(TextSelection.create(tr.doc, range.start, range.end));
 
 				dispatch(tr);
+			},
+			remove: () => {
+				const tr = state.tr;
+
+				tr.removeMark(range.start, range.end, link);
+				tr.setSelection(TextSelection.create(tr.doc, range.start, range.end));
+
+				dispatch(tr);
+			}
+		},
+		closeOnClickOutside: false
+	}).open();
+}
+
+function addLink(state: EditorState, dispatch: (tr: Transaction) => void, range: SimpleRange) {
+	const text = state.doc.textBetween(range.start, range.end);
+
+	modalService.new({
+		component: LinkModal,
+		attributes: {
+			text: text,
+			href: '',
+			title: '',
+		},
+		listeners: {
+			save: (data: LinkData) => {
+				const tr = state.tr;
+
+				if (!data.text) {
+					data.text = data.href
+				}
+
+				const linkMark = link.create({
+					href: data.href,
+					title: data.title
+				});
+
+				if (range.start === range.end) {
+					// If it's a cursor at a single position, create a text node
+					const textNode = schema.text(data.text, [linkMark]);
+					tr.insert(range.start, textNode);
+					range.end += textNode.nodeSize;
+				} else {
+					// Else, just add the link at the location
+					tr.addMark(range.start, range.end, linkMark);
+				}
+
+				tr.setSelection(TextSelection.create(tr.doc, range.start, range.end));
+
+				dispatch(tr);
 			}
 		},
 		closeOnClickOutside: false
@@ -101,6 +151,7 @@ export const triggerLink:Command = (state, dispatch) => {
 	if (ranges.length && !$cursor) {
 		let {$from, $to} = ranges[0];
 
+		// Try to find a link within selection
 		if (link.isInSet($from.marks())) {
 			$cursor = $from;
 		} else if (link.isInSet($to.marks())) {
@@ -108,18 +159,27 @@ export const triggerLink:Command = (state, dispatch) => {
 		} else if (state.doc.rangeHasMark($from.pos, $to.pos, link)) {
 			let found: number = null;
 
+			// Scan all nodes in selection
 			state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
 				if (found !== null) return false;
 
 				let tempLink = getLinkFromMarks(node.marks);
 				if (tempLink) {
-					found = pos + node.nodeSize;
+					found = pos + node.nodeSize - 1;
 				}
 			});
 
 			if (found !== null) {
 				$cursor = state.doc.resolve(found);
 			}
+		} else {
+			// There's no link, but it's a selection, so, we'll create a link on top of it
+			addLink(state, dispatch, {
+				start: $from.pos,
+				end: $to.pos
+			});
+
+			return true;
 		}
 	}
 
@@ -132,6 +192,12 @@ export const triggerLink:Command = (state, dispatch) => {
 			const linkRange = getLinkRange(state, currentLink, $cursor);
 
 			editLink(state, dispatch, currentLink, linkRange);
+		} else {
+			// There's no link at the cursor, so, we'll add a link on it's position
+			addLink(state, dispatch, {
+				start: $cursor.pos,
+				end: $cursor.pos
+			});
 		}
 	}
 

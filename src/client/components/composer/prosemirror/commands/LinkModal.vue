@@ -1,7 +1,7 @@
 <template>
 	<ModalFrame
 		icon="link"
-		title="Edit link"
+		:title="href ? 'Edit link' : 'Add link'"
 
 		:size="ModalSize.medium"
 
@@ -11,20 +11,23 @@
 	>
 		<FormWrapper class="form" @submit="save" @cancel="close">
 			<FormField for="text" label="Text">
-				<FormInput id="text" v-model="data.text" disabled />
+				<FormInput tabindex="1" id="text" v-model="data.text" :disabled="!!text" />
 			</FormField>
 
 			<FormField for="href" label="Link">
-				<FormInput id="href" v-model="data.href" />
+				<FormInput tabindex="2" id="href" v-model="data.href" />
 			</FormField>
 
 			<FormField for="title" label="Title">
-				<FormInput id="title" v-model="data.title" />
+				<FormInput tabindex="3" id="title" v-model="data.title" />
 			</FormField>
 
 			<div class="text-end pt-2 pb-3">
-				<BaseButton class="ms-2" @click="save" icon="link">
-					Save link
+				<BaseButton tabindex="5" class="secondary ms-2" @keydown.enter.stop @click="remove" icon="trash">
+					Remove
+				</BaseButton>
+				<BaseButton tabindex="4" class="primary ms-2" @click="save" icon="link">
+					Save
 				</BaseButton>
 			</div>
 		</FormWrapper>
@@ -36,7 +39,7 @@
 
 	import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 
-	import { ModalSize } from 'udany-toolbox/vue/ui/Modal/modalService';
+	import { modalService, ModalSize } from 'udany-toolbox/vue/ui/Modal/modalService';
 
 	import ModalFrame from 'udany-toolbox/vue/ui/Modal/ModalFrame.vue';
 	import BaseButton from 'udany-toolbox/vue/ui/Button/BaseButton.vue';
@@ -53,7 +56,7 @@
 			href: String,
 			title: String
 		},
-		emits: ['save', 'close'],
+		emits: ['close', 'save', 'remove'],
 		setup(props, { emit }) {
 			// Focus trap
 			let rootRef = ref();
@@ -79,11 +82,22 @@
 				close();
 			}
 
+			async function remove() {
+				if (await modalService.confirm({
+					message: 'Are you sure?'
+				})) {
+					emit('remove');
+
+					close();
+				}
+			}
+
 			return {
 				rootRef,
 				ModalSize,
 				data,
 				save,
+				remove,
 				close
 			}
 		}

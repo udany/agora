@@ -21,6 +21,7 @@ import {
 	faParagraph,
 	faQuoteLeft,
 	faLink,
+	faTrash,
 
 	faUser,
 	faSignOutAlt,
@@ -46,6 +47,7 @@ export default function (app) {
 		faParagraph,
 		faQuoteLeft,
 		faLink,
+		faTrash,
 
 		faUser,
 		faSignOutAlt,
