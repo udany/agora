@@ -23,7 +23,7 @@
 			</FormField>
 
 			<div class="text-end pt-2 pb-3">
-				<BaseButton tabindex="5" class="secondary ms-2" @keydown.enter.stop @click="remove" icon="trash">
+				<BaseButton v-if="href" tabindex="5" class="secondary ms-2" @keydown.enter.stop @click="remove" icon="trash">
 					Remove
 				</BaseButton>
 				<BaseButton tabindex="4" class="primary ms-2" @click="save" icon="link">

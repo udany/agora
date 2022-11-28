@@ -101,6 +101,10 @@ function editLink(state: EditorState, dispatch: (tr: Transaction) => void, curre
 		},
 		closeOnClickOutside: false
 	}).open();
+
+	const tr = state.tr;
+	tr.setSelection(TextSelection.create(tr.doc, range.start, range.end));
+	dispatch(tr);
 }
 
 function addLink(state: EditorState, dispatch: (tr: Transaction) => void, range: SimpleRange) {

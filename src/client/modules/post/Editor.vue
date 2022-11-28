@@ -6,7 +6,7 @@
 					<TextComposer v-model="data.post.title" placeholder="Title" inline />
 				</h1>
 
-				<main class="home pt-4">
+				<main>
 					<TextComposer v-model="data.post.body" focus placeholder="Every story starts with typing a single character..." />
 				</main>
 			</div>
