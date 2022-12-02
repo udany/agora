@@ -1,4 +1,10 @@
-import {NodeSpec, MarkSpec, DOMOutputSpec} from "prosemirror-model";
+import {NodeSpec, MarkSpec, DOMOutputSpec, Node} from "prosemirror-model";
+
+const baseNode = {
+	attrs: {
+		id: { default: '' }
+	}
+}
 
 /// [Specs](#model.NodeSpec) for the nodes defined in this schema.
 export const nodes = {
@@ -10,33 +16,39 @@ export const nodes = {
 	/// A plain paragraph textblock. Represented in the DOM
 	/// as a `<p>` element.
 	paragraph: {
+		attrs: baseNode.attrs,
 		content: "inline*",
 		group: "block",
 		parseDOM: [{tag: "p"}],
-		toDOM() { return ["p", 0] }
+		toDOM(node) { return ["p", { id: node.attrs.id }, 0] }
 	} as NodeSpec,
 
 	/// A blockquote (`<blockquote>`) wrapping one or more blocks.
 	blockquote: {
+		attrs: baseNode.attrs,
 		content: "block+",
 		group: "block",
 		defining: true,
 		parseDOM: [{tag: "blockquote"}],
-		toDOM() { return ["blockquote", 0] }
+		toDOM(node) { return ["blockquote", { id: node.attrs.id }, 0] }
 	} as NodeSpec,
 
 	/// A horizontal rule (`<hr>`).
 	horizontal_rule: {
+		attrs: baseNode.attrs,
 		group: "block",
 		parseDOM: [{tag: "hr"}],
-		toDOM() { return ["hr"] }
+		toDOM(node) { return ["hr", { id: node.attrs.id }] }
 	} as NodeSpec,
 
 	/// A heading textblock, with a `level` attribute that
 	/// should hold the number 1 to 6. Parsed and serialized as `<h1>` to
 	/// `<h6>` elements.
 	heading: {
-		attrs: {level: {default: 1}},
+		attrs: {
+			...baseNode.attrs,
+			level: {default: 1}
+		},
 		content: "inline*",
 		group: "block",
 		defining: true,
@@ -46,20 +58,21 @@ export const nodes = {
 			{tag: "h4", attrs: {level: 4}},
 			{tag: "h5", attrs: {level: 5}},
 			{tag: "h6", attrs: {level: 6}}],
-		toDOM(node) { return ["h" + node.attrs.level, 0] }
+		toDOM(node) { return ["h" + node.attrs.level, { id: node.attrs.id }, 0] }
 	} as NodeSpec,
 
 	/// A code listing. Disallows marks or non-text inline
 	/// nodes by default. Represented as a `<pre>` element with a
 	/// `<code>` element inside of it.
 	code_block: {
+		attrs: baseNode.attrs,
 		content: "text*",
 		marks: "",
 		group: "block",
 		code: true,
 		defining: true,
 		parseDOM: [{tag: "pre", preserveWhitespace: "full"}],
-		toDOM() { return ["pre", ["code", 0]] }
+		toDOM(node) { return ["pre", { id: node.attrs.id }, ["code", 0]] }
 	} as NodeSpec,
 
 	/// The text node.
@@ -73,6 +86,7 @@ export const nodes = {
 	image: {
 		inline: true,
 		attrs: {
+			...baseNode.attrs,
 			src: {},
 			alt: {default: null},
 			title: {default: null}
@@ -86,7 +100,7 @@ export const nodes = {
 					alt: dom.getAttribute("alt")
 				}
 			}}],
-		toDOM(node) { let {src, alt, title} = node.attrs; return ["img", {src, alt, title}] }
+		toDOM(node) { let {id, src, alt, title} = node.attrs; return ["img", {id, src, alt, title}] }
 	} as NodeSpec,
 
 	/// A hard line break, represented in the DOM as `<br>`.

@@ -103,6 +103,7 @@
 	import { TabIndexPlugin } from './plugins/tabindex';
 	import { useState } from './plugins/state';
 	import { Node } from 'prosemirror-model';
+	import { IdPlugin } from './plugins/ids';
 
 	export default defineComponent({
 		name: 'TextComposer',
@@ -167,7 +168,8 @@
 				keymap(currentKeymap),
 				PlaceholderPlugin(props.placeholder),
 				TabIndexPlugin(props.tabindex),
-				editorState.plugin()
+				editorState.plugin(),
+				IdPlugin()
 			];
 
 			onMounted(() => {
@@ -200,7 +202,6 @@
 				});
 
 				if (props.focus) view.focus();
-				console.log(view)
 			});
 
 			onBeforeUnmount(() => {
@@ -267,6 +268,7 @@
 
 	.text-composer-outer {
 		position: relative;
+		margin-top: -24px;
 
 		&.focused {
 			.toolbar {
