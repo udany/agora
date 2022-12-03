@@ -39,6 +39,8 @@ class EntityDictionary<E extends Entity> {
 	#pendingItems = new Map<ItemId, PendingItem<E>>();
 
 	async load(id: ItemId):Promise<E> {
+		if (this.#dictionary.has(id)) return this.#dictionary.get(id);
+
 		let pending = this.#pendingItems.get(id);
 		if (pending) return pending.promise;
 
@@ -74,7 +76,7 @@ class DictionaryEntity extends Entity {
 }
 
 abstract class ParentedEntity extends DictionaryEntity {
-	parent?: this = null;
+	protected parent?: this = null;
 	get $parent(): this {
 		return this.parent;
 	}
@@ -110,34 +112,34 @@ export class TextStyle extends ParentedEntity {
 		}
 	}
 
-	@Entity.Field.Entity({ class: HslColor } )
+	@Entity.Field.Entity({ class: HslColor, inherited: true } )
 	color: HslColor;
 
-	@Entity.Field.String()
+	@Entity.Field.String({ inherited: true })
 	font: string;
 
-	@Entity.Field.Float()
+	@Entity.Field.Float({ inherited: true })
 	size: number;
 
-	@Entity.Field.Float()
+	@Entity.Field.Float({ inherited: true })
 	lineHeight: number;
 
-	@Entity.Field.String()
+	@Entity.Field.String({ inherited: true })
 	alignment: Alignment;
 
-	@Entity.Field.Integer()
+	@Entity.Field.Integer({ inherited: true })
 	weight: number;
 
-	@Entity.Field.Boolean()
+	@Entity.Field.Boolean({ inherited: true })
 	italic: number;
 
-	@Entity.Field.Boolean()
+	@Entity.Field.Boolean({ inherited: true })
 	underline: number;
 
-	@Entity.Field.Boolean()
+	@Entity.Field.Boolean({ inherited: true })
 	strikethrough: number;
 
-	@Entity.Field.Integer()
+	@Entity.Field.Integer({ inherited: true })
 	case: TextCase;
 
 	constructor() {
