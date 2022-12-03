@@ -1,4 +1,5 @@
 import { Entity, HslColor } from 'udany-toolbox/modules/base';
+import type { CSSProperties } from 'vue';
 
 export enum TextCase {
 	Lower = -1,
@@ -147,23 +148,24 @@ export class TextStyle extends ParentedEntity {
 		this.id = crypto.randomUUID();
 	}
 
-	getStyle() {
-		return {
-			color: this.color.toString(),
-			fontFamily: this.font,
-			fontSize: this.size + 'px',
-			lineHeight: this.lineHeight + 'em',
-			fontWeight: this.weight,
-			fontStyle: this.italic ? 'italic' : '',
+	getStyle(): CSSProperties {
+		let style = {} as CSSProperties;
 
-			textDecoration: [
+		if (this.color) style.color = this.color.toString();
+		if (this.font) style.fontFamily = this.font;
+		if (this.size) style.fontSize = this.size + 'px';
+		if (this.lineHeight) style.lineHeight = this.lineHeight + 'em';
+		if (this.weight) style.fontWeight = this.weight;
+		if (this.italic) style.fontStyle = this.italic ? 'italic' : '';
+		if (this.underline || this.strikethrough) {
+			style.textDecoration = [
 				this.underline ? 'underline' : '',
 				this.strikethrough ? 'line-through' : '',
-			].filter(x => x).join(' '),
-
-			textTransform: this.case === 0 ? '' : (this.case > 0 ? 'uppercase' : 'lowercase'),
-
-			textAlign: this.alignment,
+			].filter(x => x).join(' ');
 		}
+		if (this.case) style.textTransform = (this.case > 0 ? 'uppercase' : 'lowercase');
+		if (this.alignment) style.textAlign = this.alignment;
+
+		return style;
 	}
 }
