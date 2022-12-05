@@ -21,6 +21,7 @@ code {
 }
 
 a {
+	color: inherit;
 	cursor: pointer;
 	text-decoration: underline var(--secondary) dotted 2px !important;
 
