@@ -5,6 +5,6 @@ export const config = {
 	baseUrl: import.meta.env.CLIENT_BASE_URL,
 
 	keys: {
-		googleFonts: 'AIzaSyD4T-2wMRNlbHQ1JH3pH577eYTvIWUMEjE'
+		googleFonts: import.meta.env.GOOGLE_FONT_KEY
 	}
 }
