@@ -1,6 +1,7 @@
 import { Auth, strategies } from 'udany-toolbox/modules/auth';
 import { User, UserModel } from './api/database/models/User';
 import { PasswordService } from './api/services/PasswordService';
+import { serverConfig } from './api/config';
 
 const strats = [
 	new strategies.LocalStrategy<User>({
@@ -16,8 +17,8 @@ const auth = new Auth({
 	strategies: strats,
 
 	routing: {
-		baseUrl: 'http://localhost:8420/',
-		routerPrefix: 'api/auth/'
+		baseUrl: serverConfig.baseUrl,
+		routerPrefix: '/api/auth/'
 	},
 
 	userFactory: profile => new User().$fill({

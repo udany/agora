@@ -24,6 +24,8 @@ class SessionService {
 		let user = await apiService.auth.session();
 		if (user) {
 			this.session.user = user;
+		} else {
+			this.session.user = null;
 		}
 
 		ack(true);

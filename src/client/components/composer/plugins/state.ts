@@ -65,9 +65,7 @@ export function useState():ProseMirrorState {
 			if (mark.isInSet(state.storedMarks || $cursor.marks()))
 				return true;
 		} else {
-			let has = false, tr = state.tr;
-
-			for (let i = 0; !has && i < ranges.length; i++) {
+			for (let i = 0; i < ranges.length; i++) {
 				let {$from, $to} = ranges[i]
 				if (state.doc.rangeHasMark($from.pos, $to.pos, mark)) {
 					return true;
@@ -142,13 +140,15 @@ export function useState():ProseMirrorState {
 		}
 	});
 
-	useEventListener(document, 'selectionchange', async () => {
-		const docSelection = window.getSelection();
+	if (!import.meta.env.SSR) {
+		useEventListener(document, 'selectionchange', async () => {
+			const docSelection = window.getSelection();
 
-		if (docSelection.isCollapsed) {
-			editorState.selected = false;
-		}
-	});
+			if (docSelection.isCollapsed) {
+				editorState.selected = false;
+			}
+		});
+	}
 
 	return editorState;
 }

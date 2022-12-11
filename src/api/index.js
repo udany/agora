@@ -1,5 +1,6 @@
 import path from 'path';
 import db from './database';
+import { serverConfig } from './config';
 let glob = require('fast-glob');
 
 const routesDir = (__dirname + '\\routes').replace(/\\/g, `/`);
@@ -29,6 +30,8 @@ function registerApi({
 
 		api.use(route.path, route.router);
 	}
+
+	console.log(serverConfig);
 }
 
 export default registerApi;

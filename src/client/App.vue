@@ -1,11 +1,13 @@
 <template>
-	<component class="base-layout" :is="layout">
-		<router-view v-slot="{ Component }">
-			<transition name="route">
-				<component :is="Component" />
-			</transition>
-		</router-view>
-	</component>
+	<suspense>
+		<component class="base-layout" :is="layout">
+			<router-view v-slot="{ Component }">
+				<transition name="route">
+					<component :is="Component" />
+				</transition>
+			</router-view>
+		</component>
+	</suspense>
 </template>
 
 <script>

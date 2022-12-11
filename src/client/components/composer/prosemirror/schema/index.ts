@@ -1,5 +1,5 @@
 import { Schema, MarkSpec, DOMOutputSpec } from "prosemirror-model";
-import { marks, nodes } from "prosemirror-schema-basic";
+import { marks, nodes } from "./nodes";
 
 const schema = new Schema({
 	marks: {

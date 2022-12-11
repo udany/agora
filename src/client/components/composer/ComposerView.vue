@@ -1,13 +1,12 @@
 <template>
 	<div class="composer-view">
-		<div class="contents" ref="root"></div>
+		<div class="contents" v-html="html"></div>
 	</div>
 </template>
 
 <script lang="ts">
-	import { computed, defineComponent, ref, watchEffect } from 'vue';
-	import { DOMSerializer, Node } from 'prosemirror-model';
-	import { schema } from './prosemirror';
+	import { defineComponent, inject, ref, watch } from 'vue';
+	import { contentToHtml } from './contentToHtml';
 
 	export default defineComponent({
 		name: 'ComposerView',
@@ -15,19 +14,24 @@
 			content: Object
 		},
 		setup(props) {
-			const root = ref();
-			let serializer = DOMSerializer.fromSchema(schema);
-			let html = computed(() => props.content ? serializer.serializeFragment(Node.fromJSON(schema, props.content).content) : null);
+			let html = ref('');
 
-			watchEffect(() => {
-				if (html.value && root.value) {
-					root.value.innerHTML = '';
-					root.value.appendChild(html.value);
+			function updateHtml() {
+				if (props.content) {
+					html.value = contentToHtml(props.content, inject('document'));
+				} else {
+					html.value = '';
 				}
-			})
+			}
+
+			watch(() => props.content, async () => {
+				updateHtml();
+			});
+
+			updateHtml();
 
 			return {
-				root
+				html
 			}
 		}
 	})

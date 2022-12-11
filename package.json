@@ -5,7 +5,15 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "node index.js",
-		"build:node": "babel src --extensions .ts,.js --out-dir dist"
+		"prod": "SET NODE_ENV=production&&node index.js",
+		"cloud": "pm2 restart ecosystem.config.js --env production",
+
+		"build": "npm run build:client && npm run build:server",
+		"build:client": "vite build --outDir ../dist/client --emptyOutDir --ssrManifest",
+		"build:server": "vite build --outDir ../dist/server --emptyOutDir --ssr entry-server.js",
+		"build:node": "babel src --extensions .ts,.js --out-dir src/dist/server",
+
+		"build:cloud": "npm run build:client -- --mode cloud && npm run build:server -- --mode cloud"
 	},
 	"author": "",
 	"license": "ISC",
@@ -15,8 +23,10 @@
 		"@fortawesome/vue-fontawesome": "^3.0.1",
 		"axios": "^0.27.2",
 		"bcrypt": "^5.1.0",
+		"dotenv": "^16.0.3",
 		"express": "^4.18.1",
 		"fast-glob": "^3.2.11",
+		"jsdom": "^20.0.2",
 		"prosemirror-commands": "^1.3.0",
 		"prosemirror-history": "^1.3.0",
 		"prosemirror-keymap": "^1.2.0",
@@ -25,8 +35,8 @@
 		"prosemirror-view": "^1.27.2",
 		"udany-base-configs": "construimos/udany-base-configs#typescript",
 		"udany-toolbox": "construimos/udany-toolbox#typescript",
-		"vue": "^3.2.37",
-		"vue-router": "^4.1.1"
+		"vue": "^3.2.45",
+		"vue-router": "^4.1.6"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.16.0"

@@ -44,11 +44,6 @@
 
 	export default {
 		name: 'DefaultLayout',
-		data: () => ({
-			modalService,
-			session: sessionService.session,
-			ProfileRoutes
-		}),
 		components: {
 			FaIcon,
 			UserAvatar,
@@ -66,6 +61,9 @@
 			}, 300);
 
 			return {
+				ProfileRoutes,
+				modalService,
+				session: sessionService.session,
 				showUserMenu,
 				onMouseEnterAvatar() {
 					hideUserMenuTimer.stop();

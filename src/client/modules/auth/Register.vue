@@ -3,7 +3,7 @@
 		<div class="login">
 			<h1 class="text-center">Register</h1>
 
-			<div class="login-form">
+			<FormWrapper class="register-form" @submit="register">
 				<FormField for="name" label="Name">
 					<FormInput id="name" v-model="user.name" />
 				</FormField>
@@ -33,7 +33,7 @@
 						Login
 					</BaseButton>
 				</div>
-			</div>
+			</FormWrapper>
 		</div>
 	</MainContent>
 </template>
@@ -51,10 +51,11 @@
 	import { apiService } from '../../services/api';
 	import { modalService } from 'udany-toolbox/vue/ui/Modal/modalService';
 	import emailRegex from 'udany-toolbox/modules/util/helpers/emailRegex';
+	import FormWrapper from '../../components/form/FormWrapper.vue';
 
 	export default defineComponent({
 		name: 'Home',
-		components: { FormInput, FormField, MainContent, BaseButton },
+		components: { FormWrapper, FormInput, FormField, MainContent, BaseButton },
 		setup() {
 			const router = useRouter();
 			let user = reactive(new User());
@@ -118,7 +119,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.login-form {
+	.register-form {
 		max-width: 300px;
 		margin: var(--spacer-3) auto;
 

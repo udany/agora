@@ -13,11 +13,13 @@ body {
 
 img { max-width: 100%; }
 
-
 // Scrollbars
 * {
+	--local-scroll-bar-opacity: var(--scroll-bar-opacity);
+	transition: --local-scroll-bar-opacity .3s;
+
 	&:hover {
-		--scroll-bar-opacity: 1;
+		--local-scroll-bar-opacity: 1;
 	}
 
 	&::-webkit-scrollbar {
@@ -30,7 +32,7 @@ img { max-width: 100%; }
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: hsla(var(--scroll-bar-color), var(--scroll-bar-opacity));
+		background: hsla(var(--scroll-bar-color), var(--local-scroll-bar-opacity));
 
 		border: 1px solid hsla(var(--dark-hsl), .5);
 		border-radius: var(--scroll-bar-size);

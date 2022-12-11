@@ -10,7 +10,12 @@ router.get('/:id', async (req, res, next) => {
 
 	let post = await PostModel.getById(id);
 
-	res.send(post.$serialize(true));
+	if (post) {
+		res.send(post.$serialize(true));
+	} else {
+		res.status(404);
+		res.send();
+	}
 })
 router.get('/user/:id', async (req, res, next) => {
 	let { id } = req.params;
@@ -42,7 +47,19 @@ router.post('/save', async (req, res, next) => {
 
 	let { post: postData } = req.body;
 	let post = new Post().$fill(postData);
-	post.userId = user.id;
+
+	if (post.id) {
+		let oldPost = await PostModel.getById(post.id);
+
+		if (oldPost.userId !== user.id) {
+			res.status(400);
+			res.send('Unauthorized to edit this');
+
+			return;
+		}
+	} else {
+		post.userId = user.id;
+	}
 
 	if (!post.created) {
 		post.created = new Date();

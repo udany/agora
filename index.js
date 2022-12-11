@@ -1,4 +1,10 @@
+const path = require('path');
+
 const { startBabelRegister } = require('udany-base-configs/modules/babel.js');
+
+require('dotenv').config({
+	path: path.resolve(process.cwd(), 'env', '.env')
+});
 
 startBabelRegister({
 	ignore: [
