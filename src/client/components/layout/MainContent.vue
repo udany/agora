@@ -49,8 +49,10 @@
 		background: var(--neutral-dark);
 		margin: var(--spacer-3) auto;
 
-
 		transition: opacity .3s, filter .3s;
+
+		position: relative;
+
 		&.leaving {
 			opacity: .5;
 			filter: blur(2px) grayscale(1);
