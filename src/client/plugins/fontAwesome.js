@@ -11,6 +11,7 @@ import {
 	faAngleRight,
 	faPencilAlt,
 	faKey,
+	faArrowLeft,
 
 	faFont,
 	faBold,
@@ -37,6 +38,7 @@ export default function (app) {
 		faAngleRight,
 		faPencilAlt,
 		faKey,
+		faArrowLeft,
 
 		faFont,
 		faBold,
