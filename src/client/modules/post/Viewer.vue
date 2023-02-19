@@ -7,7 +7,7 @@
 		</Sidetab>
 		<AutoResizer v-if="data.post.id">
 			<div class="post" :class="[data.theme.cssClass]">
-				<h1 :style="data.headingStyle.getStyle()">
+				<h1>
 					<ComposerView :content="data.post.title" />
 				</h1>
 				<small>
@@ -25,16 +25,16 @@
 				<main class="home pt-4">
 					<ComposerView :content="data.post.body" />
 				</main>
+			</div>
 
-				<div class="mt-4 text-end" v-if="data.post?.id && data.post?.user?.id === session.user?.id">
-					<router-link :to="{name: 'post-edit', params: {id: data.post.id}}">
-						<BaseButton
-							type="submit" icon="pencil-alt" class="primary large"
-						>
-							Edit
-						</BaseButton>
-					</router-link>
-				</div>
+			<div class="mt-4 text-end" v-if="data.post?.id && data.post?.user?.id === session.user?.id">
+				<router-link :to="{name: 'post-edit', params: {id: data.post.id}}">
+					<BaseButton
+						type="submit" icon="pencil-alt" class="primary large"
+					>
+						Edit
+					</BaseButton>
+				</router-link>
 			</div>
 		</AutoResizer>
 	</MainContent>
@@ -74,19 +74,25 @@
 		return null;
 	}
 
-	let textStyle = new ThemeStyle().$fill({id: `7hhgfhgcbf7d27-b910-4b53-8a4c-3af72bd79025`});
+	let textStyle = new ThemeStyle().$fill({});
 	textStyle.name = 'Text';
-	textStyle.font = 'Time News Roman';
+	textStyle.font = 'Tahoma';
 	textStyle.size = 16;
 	textStyle.selectors = [Selector.any];
 
-	let headingStyle = new ThemeStyle().$fill({ parentId: textStyle.id, color: [0, 1, .5, 1] });
+	let headingStyle = new ThemeStyle().$fill({ parentId: textStyle.id, color: [0.2, .7, .5, 1] });
 	headingStyle.name = 'Heading';
-	headingStyle.size = 32;
+	headingStyle.font = 'Lucida Sans';
+	headingStyle.size = 22;
 	headingStyle.selectors = [Selector.heading];
 
+	let titleStyle = new ThemeStyle().$fill({ parentId: headingStyle.id });
+	titleStyle.name = 'Title';
+	titleStyle.size = 32;
+	titleStyle.selectors = [Selector.title];
+
 	let theme = new DocumentTheme().$fill({
-		styles: [textStyle, headingStyle]
+		styles: [textStyle, headingStyle, titleStyle]
 	});
 
 	export default defineComponent({
@@ -103,8 +109,6 @@
 			let data = reactive({
 				post: new Post(),
 				loading: null as Promise<void>,
-				headingStyle,
-				textStyle,
 				theme,
 				side: true
 			});
@@ -117,26 +121,20 @@
 					data.loading = null;
 				})
 			};
-			const routeIdMatches = () => parseInt(route.params.id as string) === data.post?.id;
-
 			onServerPrefetch(async () => {
 				await load();
 			});
 
-			let dynamicStyle = useDynamicStyle(computed(() => data.theme.css));
+			useDynamicStyle(computed(() => data.theme.css), { autoMount: true });
+
+			const routeIdMatches = () => parseInt(route.params.id as string) === data.post?.id;
 
 			onMounted(async () => {
-				dynamicStyle.mount();
-
 				await nextTick();
 				if (!routeIdMatches()) {
 					await load();
 				}
 			});
-
-			onBeforeUnmount(() => {
-				dynamicStyle.destroy();
-			})
 
 			watch(() => route.params.id, async () => {
 				if (!routeIdMatches()) {
