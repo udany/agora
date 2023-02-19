@@ -5,9 +5,9 @@
 
 		:size="ModalSize.medium"
 
-		:show-close="false"
-
 		ref="rootRef"
+
+		@close="$emit('close')"
 	>
 		<FormWrapper class="form" @submit="save" @cancel="close">
 			<FormField for="text" label="Text">
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent, onBeforeUnmount, onMounted, ref, defineEmits, reactive } from 'vue';
+	import { defineComponent, onBeforeUnmount, onMounted, ref, defineEmits, reactive, watch } from 'vue';
 
 	import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 
@@ -60,11 +60,7 @@
 		setup(props, { emit }) {
 			// Focus trap
 			let rootRef = ref();
-			const trap = useFocusTrap(rootRef, { immediate: true });
-
-			onBeforeUnmount(() => {
-				trap.deactivate();
-			});
+			useFocusTrap(rootRef, { immediate: true });
 
 			const data: LinkData = reactive({
 				text: props.text,
