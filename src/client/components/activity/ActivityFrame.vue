@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-	import { defineComponent } from 'vue';
-	import { createActivityContext } from './activityService';
+	import { defineComponent, PropType } from 'vue';
+	import { ActivityDescriptor, createActivityContext } from './activityService';
 
 	export default defineComponent({
 		name: 'ActivityFrame',
 		props: {
 			base: {
-				type: Object
+				type: Object as PropType<ActivityDescriptor<any>>
 			}
 		},
 		setup(props) {

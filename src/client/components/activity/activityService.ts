@@ -7,8 +7,7 @@ export declare type ComponentDescriptor<Props> = {
 	listeners?: Object;
 }
 
-export declare type ActivityProps = { visible: boolean };
-export declare type ActivityDescriptor<Props extends ActivityProps> = ComponentDescriptor<Props> & {
+export declare type ActivityDescriptor<Props> = ComponentDescriptor<Props> & {
 	id?: number
 };
 
