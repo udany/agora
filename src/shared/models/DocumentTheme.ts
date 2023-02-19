@@ -1,12 +1,13 @@
 import { TextStyle } from './TextStyle';
 import { Entity } from 'udany-toolbox/modules/base/index';
 import { EntityDictionary } from './DictionaryEntity';
-import { watch, Ref, ComputedRef } from 'vue';
+import { watch, Ref, ComputedRef, onMounted, onBeforeUnmount } from 'vue';
 
 export enum Selector {
 	any = '> *',
 	paragraph = 'p',
 	heading = 'h1, h2, h3, h4, h5, h6',
+	title = 'h1',
 	blockquote = 'blockquote',
 	code = 'code'
 }
@@ -106,12 +107,15 @@ export class DocumentTheme extends Entity {
 	}
 }
 
-export function useDynamicStyle(content: Ref<string> | ComputedRef<string>) {
+declare type useDynamicStyleOptions = {
+	autoMount?: boolean
+};
+export function useDynamicStyle(content: Ref<string> | ComputedRef<string>, options: useDynamicStyleOptions = {}) {
 	let styleElement = document.createElement('style');
 
 	let clearWatch;
 
-	return {
+	const dynamicStyle = {
 		styleElement,
 		mount() {
 			if (clearWatch) clearWatch();
@@ -128,5 +132,17 @@ export function useDynamicStyle(content: Ref<string> | ComputedRef<string>) {
 			clearWatch();
 			document.head.removeChild(styleElement);
 		}
+	};
+
+	if (options.autoMount) {
+		onMounted(async () => {
+			dynamicStyle.mount();
+		});
+
+		onBeforeUnmount(() => {
+			dynamicStyle.destroy();
+		})
 	}
+
+	return dynamicStyle
 }
